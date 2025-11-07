@@ -1,13 +1,13 @@
 import { Themeprops } from "@/types/types";
 import { useColorScheme } from "nativewind";
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
 
   const { colorScheme, setColorScheme } = useColorScheme();
 
-  const Themes: Themeprops[] = ["light", "dark", "system"]
+  const Themes: Themeprops[] = ["light", "dark"]
 
 
   return (
@@ -20,14 +20,15 @@ const Settings = () => {
               activeOpacity={0.5}
               key={theme}
               className={`bg-light-gray/20 dark:bg-dark-gray flex flex-row justify-between items-center border border-light-activeborder/20 border-x-0 ${theme === "light" ? "border-b-0 border-t-0" : "border-b-0"}  px-5 py-6  justify-center`}
-              onPress={() => {setColorScheme(theme)
+              onPress={() => {
+                setColorScheme(theme);
               }}
             >
               <Text className={` ${colorScheme === theme ? 'text-light-black dark:text-dark-white' : 'text-light-activeborder'} capitalize`}>
                 {theme}
               </Text>
-              <View className={`h-[2rem] w-[2rem]  ${colorScheme === theme ? 'bg-light-white' : 'bg-light-gray'} border border-light-activeborder/50 rounded-full flex justify-center items-center`}>
-                {colorScheme === theme && <View className={`h-[1.4rem] w-[1.4rem] bg-light-black/90  border-2 border-white rounded-full `}>
+              <View className={`h-[2rem] w-[2rem]  ${colorScheme === theme ? 'bg-light-white dark:bg-dark-gray' : 'bg-light-gray dark:bg-dark-gray'} border border-light-activeborder/50 rounded-full flex justify-center items-center`}>
+                {colorScheme === theme && <View className={`h-[1rem] w-[1rem] bg-light-black/90 dark:bg-dark-white  rounded-full `}>
                 </View>}
               </View>
             </TouchableOpacity>

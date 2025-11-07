@@ -1,14 +1,19 @@
+import { colors } from '@/ui/colors'
 import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
+import { useColorScheme } from 'nativewind'
 import React from 'react'
 
 const TabLayout = () => {
+    const { colorScheme } = useColorScheme();
     return (
         <Tabs screenOptions={{
-            tabBarActiveTintColor : "blue",
-            tabBarInactiveTintColor : "black",
+            headerStyle : {
+                backgroundColor : colorScheme === "light" ? colors.light.gray : colors.dark.gray,
+            },
+            headerTintColor : colorScheme === "light" ? colors.light.black : colors.dark.white,
             headerShown : false
-        }}>
+        }} >
             <Tabs.Screen name='home' 
             options={{
                 title: "Home", 
