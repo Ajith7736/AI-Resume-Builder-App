@@ -1,281 +1,165 @@
-export const Template1 = `
+export const Template1 = /*html*/`
      <!DOCTYPE html>
     <html>
     <head>
-       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <style>
-
-        @page {
-              size: A4;
-            }
-
-        *{
-            margin:0;
+        <meta  name="viewport" content="width=device-width" />
+         <style>
+         * {
+            margin: 0;
             padding: 0;
+            box-sizing: border-box;;
         }
 
-        body{     
-            padding: 45px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.2rem;
-            justify-content: center;
+        body {
+            width: 594.96pt;
+            height: 840.96pt;
+            padding: 25px;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            color: #000;
         }
 
-        a{
-        text-decoration : none;
-        color : black;
+        h1,h2,h3{
+            margin-bottom: 3px;
         }
 
-        .header{
-          color: black;
-          font-size: 1.3rem;
+        section{
+            margin-top: 12px;
         }
 
-        .Name{
-            font-size: 2rem;
-            font-weight: 800;
+        a {
+            text-decoration : none;
+            color : black;
         }
 
-        .contents{
-         font-size: 1rem;
+        .bold {
+          font-weight: bold;  
         }
 
-        .professional-title{
-            font-style: italic;
+        hr{
+            border : 1px solid black;
         }
 
-        .heading{
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        p, li {
+            line-height: 1.4;
+            margin-top: 5px;
         }
 
-        .subtitle{
-        font-size:.9rem;
+
+        .Profession {
+            font-size : 15pt;
         }
 
-        .personal-details{
-            display: flex;
-            gap: 10px;
-            font-size: 15px;
-        }
-        .border-line{
-            background-color: black;
-            width: full;
-            height: 1.5px;
-        }
-        .sections{
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        .skill-title{
-            font-weight: 700;
-        }
-        .skills-content {
-            display: flex;
-            gap: 3px;
-        }
-        .project-heading{
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
 
-        .project-maintitle{
-            display: flex;
-            justify-content: space-between;
-        }
-        .project-title{
-            font-weight: bold;
-        }
-        .project-date{
-            color: gray;
-        }
-        .project-content{
-            padding-left: 15px;
-        }
-        .language{
-            display: flex;
-            align-items: center;
-            gap: 5px
-        }
-        .language-name{
-            font-weight: bold;
-        }
-        .education-institute{
-            font-weight: bold;
-        }
-        .education{
-            display: flex;
-            justify-content: space-between;
-        }
-        .education-detail{
-            display: flex;
-            gap: 3px
-        }
-        .strength-name{
-            font-weight: bold;
-        }
-        .strength{
-            display: flex;
-            gap:3px;
-        }
+
         </style>
 </head>
     <body>
-        <div class="heading">
-             <h2 class="Name">Ajith P</h2>
-             <p class="professional-title">Full Stack Developer</p>
-        </div>
-        <div class="personal-details">
-            <p>ajith.aju39502@gmail.com</p>
-            <p>|</p>
-            <p>+91 7736696075</p>
-            <p>|</p>
-            <p>Palakkad, Kerala, India</p>
-            <p>|</p>
-            <a href="https://www.google.com" target="_blank">Github</a>
-            <p>|</p>
-            <p>LinkedIn</p>
-        </div>
-        <div class="profile-summary sections">
-            <h3 class="header">PROFILE</h3>
-            <div class="border-line"></div>
-            <p class="contents">Full Stack Developer specializing in LLM-integrated web applications and scalable backend systems. Architected and deployed production applications using Next.js, Node.js, and Express.js on Vercel with PostgreSQL, MongoDB, and SQLite databases. Built AI-powered platforms leveraging Groq API, OpenAI API, and Vercel AI SDK that achieved 60% reduction in design time and 40% improvement in load performance. Deliver end-to-end solutions from database design through serverless deployment, with proven expertise in translating complex technical requirements into production-ready code.</p>
-        </div>
-        <div class="profile-skills sections">
-            <h3 class="header">SKILLS</h3>
-            <div class="border-line"></div>
-            <div class="skills-content ">
-                <p class="skill-title">Languages</p>
-                <p>-</p>
-                <p class="skill-desc contents">Javascript, Typescript, Python, Java, SQL, HTML5, CSS3</p>
+    <div class='body'>
+     <table width="100%" style="border-collapse: collapse;">
+        <tr style="vertical-align: middle;">
+            <td>
+                <h1>Ajith P</h1>
+            </td>
+            <td style="text-align: right;">
+                <p class="Profession"><i>Full Stack Developer</i></p>
+            </td>
+        </tr>
+   </table>
+
+   
+        <section>
+            <p>ajith.aju39502@gmail.com | +91 7736696075 | Palakkad, Kerala, India | <a href="https://www.google.com" target="_blank">Github</a> | LinkedIn </p>
+        </section>
+        <section>
+            <h3>PROFILE</h3>
+            <hr />
+            <p>Full Stack Developer specializing in LLM-integrated web applications and scalable backend systems. Architected and deployed production applications using Next.js, Node.js, and Express.js on Vercel with PostgreSQL, MongoDB, and SQLite databases. Built AI-powered platforms leveraging Groq API, OpenAI API, and Vercel AI SDK that achieved 60% reduction in design time and 40% improvement in load performance. Deliver end-to-end solutions from database design through serverless deployment, with proven expertise in translating complex technical requirements into production-ready code.</p>
+        </section>
+        <section>
+            <h3>SKILLS</h3>
+            <hr />
+            <div>
+                <p><b>Languages -</b> Javascript, Typescript, Python, Java, SQL, HTML5, CSS3</p>
             </div>
-            <div class="skills-content">
-                <p class="skill-title">Frontend</p>
-                <p>-</p>
-                <p class="skill-desc contents">React, NextJS, Redux, Tailwind CSS, Framer Motion</p>
-            </div>
-            <div class="skills-content">
-                <p class="skill-title">Backend</p>
-                <p>-</p>
-                <p class="skill-desc contents">Node.js, Express.js, REST APIs</p>
-            </div>
-            <div class="skills-content">
-                <p class="skill-title">Databases</p>
-                <p>-</p>
-                <p class="skill-desc contents">MongoDB, PostgreSQL, SQLite</p>
-            </div>
-            <div class="skills-content">
-                <p class="skill-title">AI & LLM Tools</p>
-                <p>-</p>
-                <p class="skill-desc contents">Vercel AI SDK, Groq API, OpenAI API, AI Model Integration</p>
-            </div>
-            <div class="skills-content">
-                <p class="skill-title">Tools & Platforms</p>
-                <p>-</p>
-                <p class="skill-desc contents">Git, GitHub, Figma</p>
-            </div>
-        </div>
-        <div class="profile-projects sections">
-            <h3 class="header">PROJECTS</h3>
-           <div class="border-line"></div>
-           <div class="project">
-               <div class="project-maintitle">
-                   <div class="project-heading">
-                      <p class="project-title">GenUI builder,</p>
-                      <p class="project-desc subtitle">AI-Powered UI Generation</p> 
+        </section>
+        <section>
+        <h3>PROJECTS</h3>
+          <hr />
+           <div>
+               <div>
+                   <div>
+                      <p><strong>GenUI builder </strong> - Powered UI Generation</p>
                    </div>
                 <div>
-                      <p class="project-date contents">08/2025 - 09/2025</p>
+                      <p >08/2025 - 09/2025</p>
                 </div>
                 </div>
-                <div class="project-subheading subtitle">
+                <div>
                     <p>Next.js | Node.js | MongoDB | Groq API | Vercel AI SDK | Vercel Deployment</p>
                   
                 </div>
-                <div class="project-content contents">
+                <div>
                     <ul>
                         <li>Engineered an LLM-driven UI generation platform using Groq API and Vercel AI SDK that automated responsive component creation, cutting design time by 60%.</li>
                         <li>Integrated real-time AI streaming with Next.js server actions and MongoDB for state management, reducing preview load time by 40% across all users.</li>
                     </ul>
                 </div>
            </div>
-           <div class="project">
-               <div class="project-maintitle">
-                   <div class="project-heading">
-                       <p class="project-title">BugLab,</p>
-                    <p class="project-desc subtitle">For CyberSecurity Beginners</p>
+           <div>
+               <div>
+                   <div>
+                       <p>BugLab -</p>
+                    <p>For CyberSecurity Beginners</p>
                    </div>
                     <div>
-                         <p class="project-date">08/2025 - 09/2025</p>
+                         <p>08/2025 - 09/2025</p>
                     </div>
                 </div>
-                <div class="project-subheading subtitle">
+                <div>
                     <p>Next.js | Node.js | MongoDB | Vercel Deployment</p>
                 </div>
-                <div class="project-content contents">
+                <div >
                     <ul>
                         <li>Built a hands-on cybersecurity learning platform simulating real-world vulnerabilities (SQL Injection, XSS, CSRF, NoSQL Injection) with SQLite and MongoDB for dataset management</li>
                         <li>Designed automated scoring logic with Express.js backend validation and parameterized queries, enabling real-time evaluation of user actions across security labs</li>
                     </ul>
                 </div>
            </div>
-        </div>
-        <div class="profile-languages sections">
-            <h3 class="header">LANGUAGES</h3>
-            <div class="border-line"></div>
-            <div class="language">
-                <p class="language-name contents">English</p>
-                <p>-</p>
-                <p class="language-level contents">Proficient</p>
+        </section>
+        <section>
+            <h3>LANGUAGES</h3>
+           <hr />
+            <div>
+                <p>English - Proficient</p>
             </div>
-            <div class="language">
-                <p class="language-name contents">Malayalam</p>
-                <p>-</p>
-                <p class="language-level contents">Native</p>
-            </div>
-            <div class="language">
-                <p class="language-name contents">Tamil</p>
-                <p>-</p>
-                <p class="language-level contents">Conversational</p>
-            </div>
-            <div class="language">
-                <p class="language-name contents">Hindi</p>
-                <p>-</p>
-                <p class="language-level contents">Conversational</p>
-            </div>
-        </div>
-         <div class="profile-educations sections">
-            <h3 class="header">EDUCATION</h3>
-            <div class="border-line"></div>
-            <div class="education">
-                <div class="education-detail">
-                     <p class="education-institute contents">IHRD Malampuzha,</p>
-                <p class="education-stream contents">BSC Computer Science</p>
+        </section>
+         <section>
+            <h3 >EDUCATION</h3>
+           <hr />
+            <div>
+                <div>
+                    <p>IHRD Malampuzha,</p>
+                    <p>BSC Computer Science</p>
                 </div>
-               <div class="education-detail contents">
-                   <p class="year">09/2022 – 04/2025</p>
-                   <p>|</p>
-                   <p>Palakkad, Kerala</p>
+               <div>
+                   <p>09/2022 – 04/2025 | Palakkad, Kerala</p>
                </div>
             </div>
-        </div>
-          <div class="profile-strengths sections">
-            <h3 class="header">STRENGTH</h3>
-            <div class="border-line"></div>
-            <div class="strength contents">
-                <p><span class="strength-name">Tech Adaptability</span> - Rapid learner adept at mastering emerging technologies like AI/LLM integration, Next.js, and serverless architecture in minimal time.</p>
+        </section>
+        <section>
+          <h3>STRENGTH</h3>
+           <hr />
+            <div>
+                <p><span>Tech Adaptability</span> - Rapid learner adept at mastering emerging technologies like AI/LLM integration, Next.js, and serverless architecture in minimal time.</p>
             </div>
-            <div class="strength contents">
-                <p><span class="strength-name">Communication</span> - Strong communicator skilled in translating technical challenges into actionable team goals.</p>
+            <div>
+                <p><span>Communication</span> - Strong communicator skilled in translating technical challenges into actionable team goals.</p>
             </div>
-            </div>
+        </section>
+    </div>
+   
     </body>
 </html>
     `
+

@@ -1,64 +1,84 @@
 import { Template1 } from '@/lib/Templates/Template1'
-import { colors } from '@/ui/colors'
 import { Ionicons } from '@expo/vector-icons'
 import * as Print from "expo-print"
-import * as Sharing from "expo-sharing"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, Pressable, Text, View } from 'react-native'
-import { WebView } from "react-native-webview"
+import Pdf from "react-native-pdf"
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-const ResumePreview = () => {
+const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    const [Pdfuri, setPdfuri] = useState("")
+    const [PdfSource, setPdfSource] = useState<string>("")
 
-    const { width } = Dimensions.get("window");
-    const A4_RATIO = 297 / 210; // A4 height/width ratio
-    const webViewWidth = width - 40; // Account for margins
-    const a4Height = webViewWidth * A4_RATIO;
+    useEffect(() => {
+        generatePDF();
+    }, []);
 
-    const handleshare = async () => {
+    const generatePDF = async () => {
         try {
-            const { uri } = await Print.printToFileAsync({
+            const { base64 } = await Print.printToFileAsync({
                 html: Template1,
-                width: 595.28,
-                height: 841.89,
-                base64: false,
-            })
+                width: 595,
+                height: 842,
+                base64: true,
+            });
 
-            if (await Sharing.isAvailableAsync()) {
-                await Sharing.shareAsync(uri)
-            } else {
-                alert("Something went wrong")
-            }
+            const htmlContent = `data:application/pdf;base64,${base64}`;
+
+            setPdfSource(htmlContent);
+
         } catch (err) {
-            console.error("Error getting pdf : ", err)
+            console.error(err);
         }
-    }
+    };
+
+
 
     return (
-        <>
-            <View className='absolute  h-screen-safe w-full items-center bg-light-activeborder/20 backdrop-blur-xs'>
-                <Ionicons name='close' size={20} color={"black"} className='absolute right-6 top-16 bg-light-white p-2 rounded-md border border-light-activeborder/30'/>
-                <View className="flex-1 flex-row items-center">
-                    <WebView
-                        originWhitelist={['*']}
-                        source={{ html: Template1 }}
-                        style={{
-                            flex: 1,
-                            maxHeight: a4Height,
-                            margin: 20,
-                            borderWidth: 1,
-                            borderColor: colors.light.activeBorder
-                        }}
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
+        <SafeAreaView
+            style={{
                 
-                <Pressable className='p-5 text-light-white rounded-md bg-dark-hovergray m-10 w-32'>
-                    <Text className='text-white text-center' onPress={handleshare}>Share</Text>
+            }}
+            className='flex-1'
+        >
+            <View className='absolute inset-0 bg-light-gray/10 flex justify-center items-center p-5'>
+
+
+                <Pressable
+                    onPress={() => setshowresume(false)}
+                    className='absolute right-6 top-0 bg-white p-2 rounded-md'
+                >
+                    <Ionicons name='close' size={24} color="black" />
+                </Pressable>
+                <Pdf
+                    trustAllCerts={false}
+                    source={{
+                        uri: PdfSource,
+                        cache: false
+                    }}
+                    style={{
+                        flex: 1,
+                        width: Dimensions.get("window").width,
+                        height: 180,
+                        margin: 20
+                    }}
+                    onLoadComplete={(numberofpages, filepath) => {
+                        console.log(numberofpages)
+                    }}
+                />
+
+
+
+                <Pressable
+                    className='p-4 border border-light-activeborder/20 rounded-md bg-dark-gray mt-6 w-40'
+                >
+                    <Text className='text-white text-center font-semibold'>Share PDF</Text>
                 </Pressable>
             </View>
-        </>
+        </SafeAreaView>
     )
 }
+
+
 
 export default ResumePreview
