@@ -11,8 +11,12 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
     const [Pdfuri, setPdfuri] = useState("")
 
     useEffect(() => {
-        generatePDF();
-    }, []);
+        const timeout = setTimeout(() => {
+            generatePDF();
+        }, 500);
+
+        return () => clearTimeout(timeout);
+    }, [Template1]);
 
     const generatePDF = async () => {
         try {
@@ -61,7 +65,7 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
                 left: 0,
                 right: 0
             }}
-            className='flex-1 bg-light-hoverblack dark:bg-dark-white/20  items-center justify-center pt-16 pb-10'
+            className='flex-1 bg-light-hoverblack/10 dark:bg-dark-white/10  items-center justify-center pt-16 pb-10'
         >
             <Pressable
                 onPress={() => setshowresume(false)}
@@ -69,7 +73,7 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
             >
                 <Ionicons name='close' size={24} color="black" />
             </Pressable>
-            {Pdfuri ? <>
+            {Pdfuri !== "" ? <>
                 <Pdf
                     trustAllCerts={false}
                     source={{
@@ -77,8 +81,8 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
                         cache: false
                     }}
                     style={{
-                        width: 310,
-                        height: 430,
+                        width: 305,
+                        height: 430
                     }}
                 />
                 <Pressable

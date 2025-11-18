@@ -10,10 +10,13 @@ export const Template1 =  /*html*/`
             box-sizing: border-box;;
         }
 
+        @page {
+            padding: 20px;
+        }
+
         body {
             width: 594.96pt;
             height: 840.96pt;
-            padding: 25px;
             font-family: Arial, sans-serif;
             font-size: 11pt;
             color: #000;
@@ -53,20 +56,14 @@ export const Template1 =  /*html*/`
 </head>
     <body>
     <div class='body'>
-     <table width="100%" style="border-collapse: collapse;">
-        <tr style="vertical-align: middle;">
-            <td>
-                <h1>Ajith P</h1>
-            </td>
-            <td style="text-align: right;">
-                <p class="Profession"><i>Full Stack Developer</i></p>
-            </td>
-        </tr>
-   </table>
+        <div>
+            <h1>Ajith P</h1>
+            <p><i>Full Stack Developer</i></p>
+        </div>
 
    
         <section>
-            <p>ajith.aju39502@gmail.com | +91 7736696075 | Palakkad, Kerala, India | <a href="https://www.google.com" target="_blank">Github</a> | LinkedIn </p>
+            <p>ajith.aju39502@gmail.com | +91 7736696075 | Palakkad, Kerala, India | <a href="http://github.com/Ajith7736" target="_blank">Github</a> | LinkedIn </p>
         </section>
         <section>
             <h3>PROFILE</h3>
@@ -154,20 +151,10 @@ export const Template1 =  /*html*/`
                 <p><span>Communication</span> - Strong communicator skilled in translating technical challenges into actionable team goals.</p>
             </div>
         </section>
-        <section>
-          <h3>STRENGTH</h3>
-           <hr />
-            <div>
-                <p><span>Tech Adaptability</span> - Rapid learner adept at mastering emerging technologies like AI/LLM integration, Next.js, and serverless architecture in minimal time.</p>
-            </div>
-            <div>
-                <p><span>Communication</span> - Strong communicator skilled in translating technical challenges into actionable team goals.</p>
-            </div>
-        </section>
     </div>
    
     </body>
 </html>
     `
 
- 
+

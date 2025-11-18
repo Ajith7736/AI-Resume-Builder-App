@@ -1,12 +1,19 @@
+import TemplateProvider from "@/context/TemplateContext";
 import { Stack } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import * as SystemUI from "expo-system-ui";
 import "./globals.css";
 
+SystemUI.setBackgroundColorAsync("transparent");
+
 export default function RootLayout() {
-  return (<SafeAreaProvider>
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" options={{ title: "Home" }} />
-    </Stack>
-  </SafeAreaProvider>
-  )
+  return (
+    <TemplateProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            animation: "fade",
+          }}
+        />
+    </TemplateProvider>
+  );
 }
