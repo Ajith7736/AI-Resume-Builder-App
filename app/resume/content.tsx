@@ -1,14 +1,32 @@
 import { colors } from '@/components/ui/colors'
 import CustomText from '@/components/ui/CustomText'
+import { useContent } from '@/context/ContentContext'
 import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useColorScheme } from 'nativewind'
-import React, { useState } from 'react'
-import { Pressable, PressableProps, ScrollView, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Pressable, PressableProps, ScrollView, Text, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const content = () => {
   const { colorScheme } = useColorScheme()
-  const [selectedcontent, setselectedcontent] = useState(new Set())
+  const { contents , setcontents } = useContent()
+  const buttonopacity = useSharedValue(0);
+
+  const opacity = useAnimatedStyle(() => {
+    return {
+      opacity: buttonopacity.value
+    }
+  })
+
+  const changeopacity = () => {
+    buttonopacity.value = withTiming(1,{ duration : 300 })
+  }
+
+  console.log(contents)
+  
+
+  const [selectedcontent, setselectedcontent] = useState<Set<string>>(new Set())
   const iconColor = colorScheme === "light" ? colors.light.black : colors.dark.white
   const contentcard = [
     {
@@ -88,6 +106,13 @@ const content = () => {
     }
   ];
 
+  
+  useEffect(() => {
+    if(selectedcontent.size === 0){
+      buttonopacity.value = 0;
+    }
+  }, [selectedcontent])
+
   const handlepress = (title: string) => {
     if (!selectedcontent.has(title)) {
       setselectedcontent((prev) => {
@@ -95,7 +120,8 @@ const content = () => {
         newset.add(title);
         return newset;
       })
-    }else{
+      changeopacity();
+    } else {
       setselectedcontent((prev) => {
         const newset = new Set(prev);
         newset.delete(title);
@@ -104,18 +130,22 @@ const content = () => {
     }
   }
 
-  console.log([...selectedcontent])
+  const handlecontent = () => {
+    setcontents([...selectedcontent])
+  }
+
   return (
-    <SafeAreaView className='flex-1 bg-light-white dark:bg-dark-black'>
+    <SafeAreaView className='flex-1 bg-light-white dark:bg-dark-black relative'>
       <CustomText className='text-2xl m-5 font-extrabold'>Add Content</CustomText>
       <ScrollView className='flex gap-2'>
         {contentcard.map((content) => {
-          return <Pressable onPress={() => handlepress(content.title)} key={content.title} className={`m-5 p-5 flex gap-4 border border-light-activeborder/10 bg-dark-inputfield rounded-md ${selectedcontent.has(content.title) && 'border-dark-hoverwhite'}`}>
+          return <Pressable onPress={() => handlepress(content.title)} key={content.title} className={`m-5 p-5 flex gap-4 border border-light-activeborder/10 bg-dark-inputfield rounded-md ${selectedcontent.has(content.title) && 'border-dark-white/30'}`}>
             <CustomText className='text-lg font-extrabold'>{content.icon} {content.title}</CustomText>
             <CustomText className='text-sm dark:text-dark-activeborder'>{content.desc}</CustomText>
           </Pressable>
         })}
       </ScrollView>
+      { selectedcontent.size > 0 && <Animated.View style={opacity} className='absolute bottom-20 right-16'><Pressable onPress={handlecontent} className='bg-dark-white text-black px-5 py-3'><Text>Submit</Text></Pressable></Animated.View> }
     </SafeAreaView>
   )
 }
