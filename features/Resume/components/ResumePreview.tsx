@@ -1,14 +1,13 @@
+import { colors } from '@/components/ui/colors'
 import { useUserData } from '@/context/UserDataContext'
 import { Template1 } from '@/lib/Templates/Template1'
-import { Ionicons } from '@expo/vector-icons'
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import * as Print from "expo-print"
 import * as Sharing from "expo-sharing"
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Pressable, Text } from 'react-native'
-import Pdf from "react-native-pdf"
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React, { RefObject, useEffect, useState } from 'react'
+import { Text } from 'react-native'
 
-const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | null> }) => {
     const [Pdfuri, setPdfuri] = useState("")
     const { userdata } = useUserData()
 
@@ -23,7 +22,7 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
 
     const generatePDF = async () => {
         try {
-            const { uri, base64 } = await Print.printToFileAsync({
+            const { uri } = await Print.printToFileAsync({
                 html: Template1(userdata),
                 width: 595,
                 height: 842,
@@ -58,44 +57,35 @@ const ResumePreview = ({ setshowresume }: { setshowresume: React.Dispatch<React.
     }
 
 
+    const BackDropComponent = (props: any) => {
+        return <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1} {...props} />
+
+    }
+
 
     return (
-        <SafeAreaView
-            style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0
+        <BottomSheetModal
+            ref={Sheetref}
+            index={1}
+            snapPoints={["90%"]}
+            backgroundStyle={{
+                backgroundColor: "white",
+                borderWidth: 1,
+                borderColor: "#e5e7eb",
+                borderRadius: 35,
             }}
-            className='flex-1 bg-light-hoverblack/5 dark:bg-dark-white/5 z-10  items-center justify-center pt-16 pb-10'
+            handleIndicatorStyle={{
+                backgroundColor: colors.tailwind.stone[400],
+                shadowRadius: 10,
+                width: "20%"
+            }}
+            enablePanDownToClose={true}
+            backdropComponent={BackDropComponent}
         >
-            <Pressable
-                onPress={() => setshowresume(false)}
-                className='absolute right-6 top-10 bg-white p-2 rounded-md'
-            >
-                <Ionicons name='close' size={24} color="black" />
-            </Pressable>
-            {Pdfuri !== "" ? <>
-                <Pdf
-                    trustAllCerts={false}
-                    source={{
-                        uri: Pdfuri,
-                        cache: false
-                    }}
-                    style={{
-                        width: 305,
-                        height: 430
-                    }}
-                />
-                <Pressable
-                    className='p-4 border border-light-activeborder/20 rounded-md bg-dark-gray mt-6 w-40'
-                    onPress={handleShare}
-                >
-                    <Text className='text-white text-center font-semibold'>Share PDF</Text>
-                </Pressable>
-            </> : <Text className='absolute text-light-black top-1/2 dark:text-dark-white'><ActivityIndicator color={"white"} /></Text>}
-        </SafeAreaView>
+            <BottomSheetScrollView className='p-30 '>
+                <Text className='text-center stroke-stone-200 mt-5 text-lg uppercase tracking-widest font-extrabold'>Preview</Text>
+            </BottomSheetScrollView>
+        </BottomSheetModal>
     )
 }
 

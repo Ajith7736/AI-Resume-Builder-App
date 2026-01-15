@@ -75,13 +75,13 @@ export function Template1(userdata: Record<string, string>): string {
     <body>
     <div class='body'>
         <div>
-            ${userdata.fullname ? <h1>${userdata.fullname}</h1> : <h1></h1>}
-            <p><em>${userdata.professionaltitle}</em></p>
+            <h1>${userdata.fullname || ''}</h1>
+            <p><em>${userdata.professionaltitle || ''}</em></p>
         </div>
 
    
         <section>
-            <p>${userdata.email} | +91 ${userdata.phonenumber} | ${userdata.address} | <a href="http://github.com/Ajith7736" target="_blank">Github</a> | LinkedIn </p>
+            <p> ajith.aju39502@gmail.com | +91 7736696075 | Palakkad, Kerala | <a href="http://github.com/Ajith7736" target="_blank">Github</a> | LinkedIn </p>
         </section>
         <section>
             <h3>SUMMARY</h3>

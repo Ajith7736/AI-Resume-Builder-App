@@ -1,3 +1,4 @@
+import TitleBackButton from "@/components/ui/TitleBackButton";
 import { Themeprops } from "@/types/types";
 import { useColorScheme } from "nativewind";
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -11,30 +12,32 @@ const Settings = () => {
 
 
   return (
-    <SafeAreaView className='flex-1 bg-light-white dark:bg-dark-black'>
-      <Text className='m-5 text-lg font-semibold dark:text-dark-white text-light-black '>Theme</Text>
-      <View className='mx-5 border border-light-activeborder/20 rounded-md'>
+    <SafeAreaView className='flex-1 bg-white p-5 '>
+      <TitleBackButton title="Settings" />
+      {/* <Text className='m-5 text-lg font-semibold text-light-black'>Theme</Text> */}
+      {/* <View className='mx-5 border border-stone-300 '>
         {Themes.map((theme) => {
           return (
             <TouchableOpacity
               activeOpacity={0.5}
               key={theme}
-              className={`bg-light-gray/20 dark:bg-dark-gray flex flex-row justify-between items-center border border-light-activeborder/20 border-x-0 ${theme === "light" ? "border-b-0 border-t-0" : "border-b-0"}  px-5 py-6  justify-center`}
+              className={`bg-stone-50 flex flex-row justify-between items-center border border-stone-300 border-x-0 ${theme === "light" ? "border-b-0 border-t-0" : "border-b-0"}  px-5 py-6  justify-center`}
               onPress={() => {
+                console.log(theme)
                 setColorScheme(theme);
               }}
             >
-              <Text className={` ${colorScheme === theme ? 'text-light-black dark:text-dark-white' : 'text-light-activeborder'} capitalize`}>
+              <Text className={` ${colorScheme === theme ? 'text-light-black' : 'text-light-activeborder'} capitalize`}>
                 {theme}
               </Text>
-              <View className={`h-[2rem] w-[2rem]  ${colorScheme === theme ? 'bg-light-white dark:bg-dark-gray' : 'bg-light-gray dark:bg-dark-gray'} border border-light-activeborder/50 rounded-full flex justify-center items-center`}>
-                {colorScheme === theme && <View className={`h-[1rem] w-[1rem] bg-light-black/90 dark:bg-dark-white  rounded-full `}>
+              <View className={`h-[2rem] w-[2rem]  ${colorScheme === theme ? 'bg-light-white' : 'bg-stone-100'} border border-stone-300 rounded-full flex justify-center items-center`}>
+                {colorScheme === theme && <View className={`h-[1rem] w-[1rem] bg-stone-800 rounded-full `}>
                 </View>}
               </View>
             </TouchableOpacity>
           )
         })}
-      </View>
+      </View> */}
     </SafeAreaView>
   )
 }

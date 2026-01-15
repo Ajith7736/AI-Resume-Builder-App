@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
 
-  return <SafeAreaView className={'h-screen'}>
+  return <SafeAreaView className={'h-screen bg-white'}>
     <Stack screenOptions={{ headerShown : false, animation: "fade" }}>
       <Stack.Screen name="index" options={{ title: "Home" }} />
       <Stack.Screen name="templates" options={{ title: "Template" }} />

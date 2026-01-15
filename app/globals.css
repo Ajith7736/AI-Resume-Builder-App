@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme */
+  
+    
+    --card: 210 2% 95%; /* #F1F2F2 (light-gray) - approximated HSL */
+    --card-foreground: 0 0% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+
+    --primary: 234 59% 51%; /* #3544CF (Indigo) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 283 100% 95%; /* #F6E4FF (Light-Pink) */
+    --secondary-foreground: 234 59% 51%; /* Indigo text on pink */
+
+    --muted: 210 2% 95%;
+    --muted-foreground: 215 16% 47%; /* #64748b */
+
+    --accent: 30 100% 96%; /* #FFF4EA (Light-Yellow) */
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 95%; /* #F2F2F2 */
+    --input: 0 0% 100%; /* #FFFFFF */
+    --ring: 234 59% 51%;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark Theme */
+    --background: 0 0% 4%; /* #0A0A0A */
+    --foreground: 0 0% 88%; /* #E1E1E1 */
+
+    --card: 0 0% 9%; /* #181818 (dark-gray) */
+    --card-foreground: 0 0% 88%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 88%;
+
+    --primary: 234 59% 51%; /* Indigo - Keep consistent or adjust for dark mode visibility */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 283 20% 20%; /* Darker pink for dark mode? Or keep it light? tailored for dark mode usually means darker. Let's make it a dark purple/pink mix or keep it and use dark text. Let's use a dark surface for secondary in dark mode usually. */
+    --secondary-foreground: 0 0% 88%;
+
+    --muted: 0 0% 9%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 30 20% 20%; /* Darker yellow/orange */
+    --accent-foreground: 0 0% 88%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 9%; /* #161616 */
+    --input: 0 0% 9%; /* #161616 */
+    --ring: 234 59% 51%;
+  }
+}

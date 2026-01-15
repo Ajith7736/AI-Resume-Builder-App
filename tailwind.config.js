@@ -7,34 +7,70 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Dark theme colors
-        'dark-white': '#E1E1E1',
-        'dark-hoverwhite': '#CFCFCF',
-        'dark-border': '#161616',
-        'dark-inputfield': '#161616',
-        'dark-activeborder': '#838383',
-        'dark-gray': '#181818',
-        'dark-hovergray': '#202020',
-        'dark-textgray': 'rgb(100, 116, 139)',
-        'dark-inputborder': '#252525',
-        'dark-black': '#0A0A0A',
-
-        'Indigo': '#3544CF',
-        'Light-Pink': '#F6E4FF',
-        'Light-Yellow': '#FFF4EA',
-
-        // Light theme colors
-        'light-white': '#FFFFFF',
-        'light-black': '#171717',
-        'light-hoverblack': '#2E2E2E',
-        'light-border': '#F2F2F2',
-        'light-inputfield': '#FFFFFF',
-        'light-activeborder': '#8A8A8A',
-        'light-gray': '#F1F2F2',
-        'light-hovergray': '#F5F5F5',
-        'light-textgray': 'rgb(100, 116, 139)',
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        // Legacy/User Specific Colors (Aliased for backward compatibility if needed, or kept as raw utils)
+        'indigo': {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+          800: '#3730a3',
+          900: '#312e81',
+          950: '#1e1b4b',
+          DEFAULT: '#3544CF', // Your custom indigo
+        },
+        'light-pink': '#F6E4FF',
+        'light-yellow': '#FFF4EA',
+      },
+      borderRadius: {
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },

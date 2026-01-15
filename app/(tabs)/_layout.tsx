@@ -10,19 +10,15 @@ const TabLayout = () => {
     return (
         <TemplateProvider>
             <Tabs screenOptions={{
-                tabBarActiveTintColor : "#6366f1",
-                headerStyle: {
-                    backgroundColor: colorScheme === "light" ? colors.light.gray : colors.dark.gray,
-                },
-                headerTintColor: colorScheme === "light" ? colors.light.black : colors.dark.white,
+                tabBarActiveTintColor : colors.tailwind.indigo[500],
                 headerShown: false,
                 tabBarStyle: {
-                    backgroundColor: colorScheme === "light" ? colors.light.white : colors.dark.gray,
-                    borderTopColor: colors.dark.activeBorder,
+                    backgroundColor: colors.tailwind.stone[50],
+                    borderTopColor: colors.tailwind.stone[300],
                     borderTopWidth: 0.2,
                     height: 70,
                     paddingTop: 5
-                }
+                },
             }} >
                 <Tabs.Screen name='home'
                     options={{

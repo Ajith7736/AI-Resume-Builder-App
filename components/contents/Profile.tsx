@@ -1,13 +1,16 @@
 import React from 'react'
 import { Controller, Path, useForm } from "react-hook-form"
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomText from '../ui/CustomText'
-import InputText from '../ui/InputText'
 import SubmitButton from '../ui/SubmitButton'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useUserData } from '@/context/UserDataContext'
+import RHFInput from '../ui/InputText'
+import { Link, router } from 'expo-router'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import TitleBackButton from '../ui/TitleBackButton'
 
 const Profile = () => {
 
@@ -78,20 +81,18 @@ const Profile = () => {
 
 
     return (
-        <SafeAreaView className='m-5 flex justify-between h-screen pb-10 gap-5'>
-
-
-            <View className='flex gap-4'>
-                <CustomText className='text-2xl font-extrabold tracking-widest'>Personal Details</CustomText>
+        <SafeAreaView className='m-5 flex justify-between h-screen pb-14 gap-5'>
+            <View className='flex gap-5'>
+                <TitleBackButton title="Profile" />
                 {PersonalContents.map((content, indx) => {
                     return <View key={indx} className='flex gap-2'>
 
-                        <CustomText className='uppercase text-sm font-extrabold tracking-widest text-stone-500'>{content.label}</CustomText>
+                        <CustomText className='uppercase text-sm font-bold tracking-widest text-stone-500'>{content.label}</CustomText>
                         <Controller
                             control={control}
                             name={content.name}
                             render={({ formState: { errors }, field: { onChange, value } }) => {
-                                return <InputText placeholder={content.placeholder} errors={errors[content.name]?.message} value={value} onChange={onChange} />
+                                return <RHFInput placeholder={content.placeholder} errors={errors[content.name]?.message} value={value} onChange={onChange} />
                             }}
                         />
                     </View>
