@@ -1,4 +1,4 @@
-import Profile from '@/components/contents/Profile';
+import Profile from '@/features/Contents/Profile';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
@@ -14,4 +14,4 @@ const ContentDetail = () => {
     )
 }
 
-export default ContentDetail;
+export default ContentDetail

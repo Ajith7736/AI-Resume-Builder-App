@@ -10,6 +10,51 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* Remove focus border from TipTap editor */
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror:focus-visible {
+  outline: none;
+}
+
+.my-custom-link {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  font-style: italic;
+}
+
+
+
+.my-custom-class {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.my-custom-class li {
+  margin-bottom: 0.20rem;
+}
+
+.my-custom-orderedlist {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+.my-custom-orderedlist ol {
+  margin-bottom: 0.20rem;
+}
+
+
+
 
 @layer base {
   * {
