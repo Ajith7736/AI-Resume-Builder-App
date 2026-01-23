@@ -4,7 +4,7 @@ import { colors } from './colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-const RHFDatePicker = ({ onChange, value, errors }: { onChange:  (...event: any[]) => void, value?: Date, errors: string | undefined }) => {
+const RHFDatePicker = ({ onChange, value }: { onChange:  (...event: any[]) => void, value?: Date }) => {
     const [isOpen, setisOpen] = useState<boolean>(false);
 
     const handleconfirm = (date: Date) => {
@@ -46,7 +46,6 @@ const RHFDatePicker = ({ onChange, value, errors }: { onChange:  (...event: any[
                 themeVariant='light'
                 isDarkModeEnabled={false}
             />
-            {errors && <Text className='text-red-500'>{errors}</Text>}
         </View>
     )
 }

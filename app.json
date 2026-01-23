@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "resume-builder",
+    "name": "Resumeai",
     "slug": "resume-builder",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,7 +11,7 @@
     "backgroundColor": "#0A0A0A",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ajith77.resumebuilder"
+      "bundleIdentifier": "com.resumeai.builder"
     },
     "android": {
       "backgroundColor": "#000000",
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.ajith77.resumebuilder"
+      "package": "com.resumeai.builder"
     },
     "web": {
       "output": "static",
@@ -48,7 +48,8 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,

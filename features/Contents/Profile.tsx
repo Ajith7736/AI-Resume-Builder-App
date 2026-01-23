@@ -1,21 +1,20 @@
 import { useUserData } from '@/context/UserDataContext'
 import { delay } from '@/lib/customdelay'
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { Controller, Path, useForm } from "react-hook-form"
 import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { z } from "zod"
+
 import CustomText from '../../components/ui/CustomText'
 import RHFInput from '../../components/ui/InputText'
-import RHFDatePicker from '../../components/ui/RHFDatePicker'
 import SubmitButton from '../../components/ui/SubmitButton'
 import TitleBackButton from '../../components/ui/TitleBackButton'
 import ImageOption from './ImageOption'
-import { Image } from 'expo-image'
-import { ProfileSchema , ProfileInput } from '@/lib/schema/ProfileSchema'
+import { UserInput } from '@/types/types'
 
 const Profile = () => {
     const [ModalVisible, setModalVisible] = useState(false)
@@ -24,10 +23,8 @@ const Profile = () => {
     const { userdata, setuserdata } = useUserData();
 
 
-
-    const { control, handleSubmit, formState: { isSubmitting }, watch } = useForm<ProfileInput>({
-        defaultValues: userdata ?? {},
-        resolver: zodResolver(ProfileSchema)
+    const { control, handleSubmit, formState: { isSubmitting }, watch } = useForm<UserInput>({
+        defaultValues: userdata ,
     })
 
 
@@ -42,7 +39,7 @@ const Profile = () => {
 
     const PersonalContents: {
         label: string,
-        name: Path<ProfileInput>,
+        name: Path<UserInput>,
         placeholder: string
     }[] = [
             {
@@ -123,7 +120,7 @@ const Profile = () => {
                             control={control}
                             name={content.name}
                             render={({ formState: { errors }, field: { onChange, value } }) => {
-                                return <RHFInput placeholder={content.placeholder} errors={errors[content.name]?.message} value={value as string} onChange={onChange} />
+                                return <RHFInput placeholder={content.placeholder} value={value as string} onChange={onChange} />
                             }}
                         />
                     </View>
@@ -132,7 +129,7 @@ const Profile = () => {
 
             </ScrollView>
 
-            <SubmitButton className='mx-5' onPress={handleSubmit(onSubmit)}>{isSubmitting ? <View className='flex flex-row gap-5 items-center justify-center'><ActivityIndicator color={"white"} /><Text className='text-white tracking-widest font-semibold'>Submitting...</Text></View> : <Text className='text-white font-semibold tracking-widest  text-center'>Submit</Text>}</SubmitButton>
+            <SubmitButton className='mx-5' onPress={handleSubmit(onSubmit)}>{isSubmitting ? <View className='flex flex-row gap-5 items-center justify-center'><ActivityIndicator color={"white"} /><Text className='text-white tracking-widest font-semibold'>Saving...</Text></View> : <View className='flex flex-row justify-center gap-2 items-center'><MaterialCommunityIcons name='check' color={'white'} size={17} /><Text className='text-white font-semibold tracking-widest  text-center'>Save</Text></View>}</SubmitButton>
         </SafeAreaView>
     )
 }
