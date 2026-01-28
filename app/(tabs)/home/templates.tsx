@@ -32,7 +32,7 @@ const Resume = () => {
             {template && <Animated.View entering={FadeIn} exiting={FadeOut} className={"absolute bottom-20 right-10"}><Pressable className="bg-indigo-500 py-4 w-[10rem] rounded-md flex flex-row justify-center items-center gap-2"
                 onPress={() => {
                     setcurrenttemplate(template)
-                    router.push("/resume")
+                    router.push("/resume/")
                 }}
             >
                 <Text className="text-white font-extrabold tracking-widest uppercase">Continue</Text>

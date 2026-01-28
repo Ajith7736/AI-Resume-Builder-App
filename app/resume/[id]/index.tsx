@@ -11,7 +11,7 @@ import { contentcard } from "@/lib/Contents/ContentCard";
 import { contents } from "@/types/types";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Link, router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,6 +20,7 @@ const Resume = () => {
     const { selectedcontents } = useContent();
     const BottomSheetRef = useRef<BottomSheetModal>(null)
     const { userdata } = useUserData();
+    const { id } = useLocalSearchParams();
 
     const handleexpand = () => {
         BottomSheetRef.current?.present()
@@ -68,8 +69,11 @@ const Resume = () => {
                     </View>
 
                     <Link href={{
-                        pathname: "/resume/[content]",
-                        params: { content: "profile" }
+                        pathname: "/resume/[id]/[content]",
+                        params: {
+                            id: id as string,
+                            content: "profile"
+                        }
                     }}><View style={[{
                         elevation: 4,
                         padding: 7
@@ -94,7 +98,7 @@ const Resume = () => {
 
                     <Pressable style={{
                         boxShadow: "0 3px 10px rgb(99, 102, 241,0.5)"
-                    }} onPress={() => router.push("/resume/content")} className="bg-indigo-500 border-solid w-full rounded-[8px] p-5">
+                    }} onPress={() => router.push(`/resume/${id}/content`)} className="bg-indigo-500 border-solid w-full rounded-[8px] p-5">
                         <View className="items-center justify-center w-full flex flex-row gap-2">
                             <Text><MaterialCommunityIcons name="plus" size={19} color={'white'} /></Text>
                             <Text className="text-white uppercase font-bold tracking-widest">Add Content</Text>

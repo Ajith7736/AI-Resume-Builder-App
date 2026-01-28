@@ -7,8 +7,8 @@ interface ToastProps {
     setisvisible: React.Dispatch<React.SetStateAction<boolean>>,
     Toastmessage: string,
     setToastmessage: React.Dispatch<React.SetStateAction<string>>,
-    success: boolean,
-    setsuccess: React.Dispatch<React.SetStateAction<boolean>>,
+    type: 'success' | 'error',
+    settype: React.Dispatch<React.SetStateAction<'success' | 'error'>>,
 }
 
 
@@ -20,13 +20,13 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
 
     const [Toastmessage, setToastmessage] = useState<string>('')
 
-    const [success, setsuccess] = useState<boolean>(true);
+    const [type, settype] = useState<'success' | 'error'>('success');
 
-    const value = { setisvisible, setToastmessage, setsuccess }
+    const value = { setisvisible, setToastmessage, settype }
 
     setToastRef(value);
 
-    return <ToastContext.Provider value={{ isvisible, setisvisible, setToastmessage, Toastmessage, success, setsuccess }}>
+    return <ToastContext.Provider value={{ isvisible, setisvisible, setToastmessage, Toastmessage, type, settype }}>
         {children}
     </ToastContext.Provider>
 }

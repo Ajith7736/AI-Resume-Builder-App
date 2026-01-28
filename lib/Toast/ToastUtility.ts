@@ -7,11 +7,12 @@ export const setToastRef = (ref: any) => {
 export const toast = {
     success: (message: string) => {
         toastRef.setToastmessage(message);
+        toastRef.settype('success')
         toastRef.setisvisible(true);
     },
     error: (message: string) => {
         toastRef.setToastmessage(message);
-        toastRef.setsuccess(false);
+        toastRef.settype('error');
         toastRef.setisvisible(true)
     }
 }

@@ -29,7 +29,7 @@ const content = () => {
 
   const handlecontent = () => {
     setselectedcontents(prev => new Set([...prev, ...contents]))
-    router.push("/resume");
+    router.back();
   }
 
 

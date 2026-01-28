@@ -1,44 +1,115 @@
+import { colors } from "@/components/ui/colors";
 import TitleBackButton from "@/components/ui/TitleBackButton";
-import { Themeprops } from "@/types/types";
-import { useColorScheme } from "nativewind";
-import { Text, TouchableOpacity, View } from 'react-native';
+import { useSession } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { AntDesign, Entypo, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { Button, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
 
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { session } = useSession()
 
-  const Themes: Themeprops[] = ["light", "dark"]
-
+  const handlesignout = () => {
+    supabase.auth.signOut();
+  }
 
   return (
     <SafeAreaView className='flex-1 bg-white p-5 '>
       <TitleBackButton title="Settings" />
-      {/* <Text className='m-5 text-lg font-semibold text-light-black'>Theme</Text> */}
-      {/* <View className='mx-5 border border-stone-300 '>
-        {Themes.map((theme) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              key={theme}
-              className={`bg-stone-50 flex flex-row justify-between items-center border border-stone-300 border-x-0 ${theme === "light" ? "border-b-0 border-t-0" : "border-b-0"}  px-5 py-6  justify-center`}
-              onPress={() => {
-                console.log(theme)
-                setColorScheme(theme);
+      <View className="mt-10 flex gap-5">
+        <View style={{
+          backgroundColor: colors.tailwind.stone[50],
+          padding: 20,
+          borderWidth: 1,
+          borderColor: colors.tailwind.stone[200],
+          borderRadius: 10,
+          display: 'flex',
+          gap: 3,
+          alignItems: "center",
+          boxShadow: "0 3px 10px rgb(0,0,0,0.04)"
+        }}>
+          <View style={{
+            backgroundColor: colors.tailwind.gray[200]
+          }} className="bg-stone-100 h-14 w-14 rounded-full overflow-hidden">
+            <Image
+              source={session?.user.user_metadata.avatar_url ?? require('@/assets/images/person.png')}
+              style={{
+                height: '100%',
+                width: '100%'
               }}
-            >
-              <Text className={` ${colorScheme === theme ? 'text-light-black' : 'text-light-activeborder'} capitalize`}>
-                {theme}
-              </Text>
-              <View className={`h-[2rem] w-[2rem]  ${colorScheme === theme ? 'bg-light-white' : 'bg-stone-100'} border border-stone-300 rounded-full flex justify-center items-center`}>
-                {colorScheme === theme && <View className={`h-[1rem] w-[1rem] bg-stone-800 rounded-full `}>
-                </View>}
-              </View>
-            </TouchableOpacity>
-          )
-        })}
-      </View> */}
-    </SafeAreaView>
+              contentFit="cover"
+              contentPosition={'center'}
+            />
+          </View>
+          <Text className="font-bold mt-5 text-lg">{session?.user.user_metadata.name}</Text>
+          <Text className="text-stone-600 italic">{session?.user.email}</Text>
+        </View>
+
+        <View style={{
+          backgroundColor: colors.tailwind.stone[50],
+          borderWidth: 1,
+          borderColor: colors.tailwind.stone[200],
+          borderRadius: 10
+        }}>
+          <Pressable style={{
+            display: 'flex',
+            gap: 3,
+            padding: 20,
+            flexDirection: 'row',
+            alignItems: "center",
+            justifyContent: 'space-between',
+            borderBottomWidth : 1,
+            borderBottomColor :  colors.tailwind.stone[200],
+          }}>
+            <View className="flex flex-row gap-8 items-center">
+              <AntDesign name="exclamation-circle" size={20} />
+              <Text className="tracking-widest">About App</Text>
+            </View>
+
+            <Entypo name="chevron-right" size={20} color="black" />
+          </Pressable>
+
+           <Pressable style={{
+            display: 'flex',
+            gap: 3,
+            padding: 20,
+            flexDirection: 'row',
+            alignItems: "center",
+            justifyContent: 'space-between',
+            borderBottomWidth : 1,
+            borderBottomColor :  colors.tailwind.stone[200],
+          }} onPress={handlesignout}>
+            <View className="flex flex-row gap-8 items-center">
+              <AntDesign name="logout" size={20} color="red" />
+              <Text className="tracking-widest" style={{ color : colors.tailwind.red[500]}}>Logout</Text>
+            </View>
+
+            <Entypo name="chevron-right" size={20} color="black" />
+          </Pressable>
+
+           <Pressable style={{
+            display: 'flex',
+            gap: 3,
+            padding: 20,
+            flexDirection: 'row',
+            alignItems: "center",
+            justifyContent: 'space-between',
+          }} >
+            <View className="flex flex-row gap-7 items-center">
+              <MaterialIcons name="delete-outline" size={24} color="red" />
+              <Text className="tracking-widest" style={{ color : colors.tailwind.red[500]}}>Delete My Account</Text>
+            </View>
+
+            <Entypo name="chevron-right" size={20} color="black" />
+          </Pressable>
+
+
+        </View>
+
+      </View>
+    </SafeAreaView >
   )
 }
 

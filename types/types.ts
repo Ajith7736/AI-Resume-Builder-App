@@ -1,3 +1,4 @@
+import { Json } from "@/lib/database.types";
 import { ReactElement } from "react";
 
 export type Themeprops = "light" | "dark" | "system"
@@ -6,6 +7,17 @@ export interface contents {
     icon: ReactElement;
     title: string;
     desc?: string;
+}
+
+export type ResumeData = {
+    createdAt: string;
+    Customization: Json;
+    id: string;
+    name: string;
+    ResumeData: Json | null;
+    template: string;
+    updatedAt: string;
+    userId: string;
 }
 
 

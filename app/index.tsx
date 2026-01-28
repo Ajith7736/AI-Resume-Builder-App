@@ -1,10 +1,21 @@
-import SubmitButton from "@/components/ui/SubmitButton";
 import { Image } from "expo-image";
-import { Redirect } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSession } from "@/context/AuthContext";
+import { colors } from "@/components/ui/colors";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
+import Loading from "@/components/ui/Loading";
+
 
 export default function Index() {
+
+    const { isLoading, session } = useSession()
+
+
+    if (isLoading || session) {
+        return <Loading />
+    }
+
     return (
         <SafeAreaView className="min-h-screen flex flex-col items-center justify-between p-10 ">
             <View className="flex w-full ">
@@ -20,6 +31,8 @@ export default function Index() {
                 }}>
                     <Image
                         source={require('@/assets/images/resume3.webp')}
+                        priority={'high'}
+                        transition={0}
                         style={{
                             height: 300,
                             width: 200
@@ -37,6 +50,8 @@ export default function Index() {
                             height: 300,
                             width: 200
                         }}
+                        priority={'high'}
+                        transition={0}
                     />
                 </View>
                 <View style={{
@@ -50,6 +65,8 @@ export default function Index() {
                             height: 300,
                             width: 200
                         }}
+                        priority={'high'}
+                        transition={0}
                     />
                 </View>
             </View>
@@ -65,6 +82,8 @@ export default function Index() {
                             height: 300,
                             width: 200
                         }}
+                        priority={'high'}
+                        transition={0}
                     />
                 </View>
                 <View style={{
@@ -78,6 +97,8 @@ export default function Index() {
                             height: 300,
                             width: 200
                         }}
+                        priority={'high'}
+                        transition={0}
                     />
                 </View>
                 <View style={{
@@ -91,21 +112,14 @@ export default function Index() {
                             height: 300,
                             width: 200
                         }}
+                        priority={'high'}
+                        transition={0}
                     />
                 </View>
             </View>
 
             <View>
-                <Pressable className="bg-indigo-500 py-5 px-8 rounded-md flex flex-row items-center gap-4">
-                    <Text className="text-white tracking-widest font-semibold">Sign in with Google</Text>
-                    <Image
-                        source={require('@/assets/images/google.png')}
-                        style={{
-                            height: 20,
-                            width: 20
-                        }}
-                    />
-                </Pressable>
+                <GoogleSignInButton />
             </View>
 
         </SafeAreaView>

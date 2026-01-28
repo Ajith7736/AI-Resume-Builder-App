@@ -1,6 +1,6 @@
 import { colors } from '@/components/ui/colors'
 import TemplateProvider from '@/context/TemplateContext'
-import { Ionicons } from '@expo/vector-icons'
+import { Entypo, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import { useColorScheme } from 'nativewind'
 import React from 'react'
@@ -24,12 +24,12 @@ const TabLayout = () => {
                 <Tabs.Screen name='home'
                     options={{
                         title: "Home",
-                        tabBarIcon: ({ color, size }) => <Ionicons name='home-sharp' size={size} color={color} />
+                        tabBarIcon: ({ color, size }) => <Entypo name='home' size={size} color={color} />
                     }} />
                 <Tabs.Screen name='settings'
                     options={{
                         title: "Settings",
-                        tabBarIcon: ({ color, size }) => <Ionicons name='settings-sharp' size={size} color={color} />
+                        tabBarIcon: ({ color, size }) => <MaterialIcons name="settings" size={size} color={color} />
                     }} />
             </Tabs>
         </TemplateProvider>
