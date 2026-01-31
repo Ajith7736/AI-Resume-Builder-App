@@ -1,19 +1,31 @@
 import { colors } from "@/components/ui/colors";
+import Loading from "@/components/ui/Loading";
 import TitleBackButton from "@/components/ui/TitleBackButton";
 import { useSession } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { AntDesign, Entypo, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useState } from "react";
 import { Button, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
 
   const { session } = useSession()
+  const [loading, setLoading] = useState(false)
 
-  const handlesignout = () => {
-    supabase.auth.signOut();
+  const handlesignout = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if(error){
+      setLoading(false);
+    }
   }
+
+  if(loading){
+    return <Loading />
+  }
+
 
   return (
     <SafeAreaView className='flex-1 bg-white p-5 '>
@@ -60,8 +72,8 @@ const Settings = () => {
             flexDirection: 'row',
             alignItems: "center",
             justifyContent: 'space-between',
-            borderBottomWidth : 1,
-            borderBottomColor :  colors.tailwind.stone[200],
+            borderBottomWidth: 1,
+            borderBottomColor: colors.tailwind.stone[200],
           }}>
             <View className="flex flex-row gap-8 items-center">
               <AntDesign name="exclamation-circle" size={20} />
@@ -71,25 +83,25 @@ const Settings = () => {
             <Entypo name="chevron-right" size={20} color="black" />
           </Pressable>
 
-           <Pressable style={{
+          <Pressable style={{
             display: 'flex',
             gap: 3,
             padding: 20,
             flexDirection: 'row',
             alignItems: "center",
             justifyContent: 'space-between',
-            borderBottomWidth : 1,
-            borderBottomColor :  colors.tailwind.stone[200],
+            borderBottomWidth: 1,
+            borderBottomColor: colors.tailwind.stone[200],
           }} onPress={handlesignout}>
             <View className="flex flex-row gap-8 items-center">
               <AntDesign name="logout" size={20} color="red" />
-              <Text className="tracking-widest" style={{ color : colors.tailwind.red[500]}}>Logout</Text>
+              <Text className="tracking-widest" style={{ color: colors.tailwind.red[500] }}>Logout</Text>
             </View>
 
             <Entypo name="chevron-right" size={20} color="black" />
           </Pressable>
 
-           <Pressable style={{
+          <Pressable style={{
             display: 'flex',
             gap: 3,
             padding: 20,
@@ -99,7 +111,7 @@ const Settings = () => {
           }} >
             <View className="flex flex-row gap-7 items-center">
               <MaterialIcons name="delete-outline" size={24} color="red" />
-              <Text className="tracking-widest" style={{ color : colors.tailwind.red[500]}}>Delete My Account</Text>
+              <Text className="tracking-widest" style={{ color: colors.tailwind.red[500] }}>Delete My Account</Text>
             </View>
 
             <Entypo name="chevron-right" size={20} color="black" />

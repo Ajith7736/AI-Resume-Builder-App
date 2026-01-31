@@ -1,5 +1,5 @@
 import { Json } from "@/lib/database.types";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 
 export type Themeprops = "light" | "dark" | "system"
 
@@ -14,27 +14,35 @@ export type ResumeData = {
     Customization: Json;
     id: string;
     name: string;
-    ResumeData: Json | null;
+    ResumeContent: ResumeContentProps | Json | null;
     template: string;
     updatedAt: string;
     userId: string;
 }
 
+export type Setter<T> = React.Dispatch<React.SetStateAction<T>>
 
-export type UserInput = {
+export type ProfileProps = Partial<Pick<ResumeContentProps, 'fullname' | 'email' | 'phonenumber' | 'links' | 'address' | 'professionaltitle' | 'profilepic'>>
+
+
+export type ResumeContentProps = {
     profilepic: string,
     fullname: string,
     professionaltitle: string,
     email: string,
     address: string,
     phonenumber: string,
-    links: Record<string, string>[],
+    links: {
+        name : string
+        label: string,
+        link: string
+    }[],
     profile: string[],
     education: {
         college: string,
         field: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         location: string,
         Description: string
     }[],
@@ -51,16 +59,16 @@ export type UserInput = {
     experience: {
         title: string,
         subtitle: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         location: string,
         description: string
     }[],
     projects: {
         projectTitle: string,
         subtitle: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         description: string
     }[],
     strength: {
@@ -75,7 +83,7 @@ export type UserInput = {
     awards: {
         award: string,
         issuer: string,
-        date: Date,
+        date: string,
         description: string
     }[],
     interest: {
@@ -85,23 +93,23 @@ export type UserInput = {
     courses: {
         courseTitle: string,
         institution: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         location: string,
         description: string
     }[],
     organizations: {
         organization: string,
         position: string,
-        startDate: Date,
-        endDate: Date,
+        startDate: string,
+        endDate: string,
         location: string,
         description: string
     }[],
     publications: {
         title: string,
         publisher: string,
-        date: Date,
+        date: string,
         description: string
     }[],
     references: {
@@ -111,7 +119,7 @@ export type UserInput = {
         email: string,
         phone: string
     }[],
-    custom: Record<string, string | Date>
+    custom: Record<string, string>
 }
 
 export type CustomizeInputs = {

@@ -28,8 +28,8 @@ model Resume {
   userId        String
   User          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   template      String
-  ResumeData    Json?
-  Customization Json?
+  ResumeContent Json?    @default("{}")
+  Customization Json?    @default("{}")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now()) @updatedAt
 }

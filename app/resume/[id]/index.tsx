@@ -1,29 +1,82 @@
 import { colors } from "@/components/ui/colors";
 import CustomText from "@/components/ui/CustomText";
+import Loading from "@/components/ui/Loading";
 import TitleBackButton from "@/components/ui/TitleBackButton";
-import ToastComponent from "@/components/ui/toast";
-import Toast from "@/components/ui/toast";
 import { useContent } from "@/context/ContentContext";
-import { useUserData } from "@/context/UserDataContext";
+import { useResumeContent } from "@/context/ResumeContentContext";
 import ResumeButton from "@/features/Resume/components/ResumeButton";
 import ResumePreview from "@/features/Resume/components/ResumePreview";
 import { contentcard } from "@/lib/Contents/ContentCard";
-import { contents } from "@/types/types";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/lib/Toast/ToastUtility";
+import { contents, ResumeContentProps } from "@/types/types";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useQuery } from "@tanstack/react-query";
+import { Image } from "expo-image";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import React, { useMemo, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { BackHandler, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Resume = () => {
     const { selectedcontents } = useContent();
+    const [isSheetOpen, setisSheetOpen] = useState(false)
     const BottomSheetRef = useRef<BottomSheetModal>(null)
-    const { userdata } = useUserData();
+    const { ResumeContent, setResumeContent, setcurrentResumeId } = useResumeContent()
     const { id } = useLocalSearchParams();
 
+    
+
+    useEffect(() => {
+
+        return () => {
+            setResumeContent(null);
+            setcurrentResumeId(null);
+        }
+    }, [])
+
+    useEffect(() => {
+        const backhandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (isSheetOpen) {
+                BottomSheetRef?.current?.dismiss();
+                return true;
+            }
+            return false;
+        })
+
+        return () => backhandler.remove()
+    }, [isSheetOpen])
+
+
+
+    const { data, isLoading, isFetching } = useQuery({
+        queryKey: ['ResumeData'],
+        queryFn: async () => {
+
+            const { data, error } = await supabase.from('Resume').select('ResumeContent,name,template,Customization').eq('id', id as string).maybeSingle()
+
+            if (error) {
+                console.error(error.message);
+                toast.error("Something went wrong!")
+            }
+
+            return { ResumeContent: data?.ResumeContent, template: data?.template, name: data?.name };
+        },
+        enabled: !!id,
+    })
+
+    useEffect(() => {
+        setResumeContent(data?.ResumeContent as ResumeContentProps);
+        setcurrentResumeId(id as string)
+    }, [data])
+
+
+
+    // console.log(JSON.stringify(data, null, 2));
+
     const handleexpand = () => {
-        BottomSheetRef.current?.present()
+        BottomSheetRef.current?.present();
     }
 
     const contentcards: contents[] = useMemo(() => {
@@ -35,36 +88,57 @@ const Resume = () => {
         })
     }, [])
 
+
+
     const profileitems = [
         {
             icon: <MaterialCommunityIcons name="email-outline" size={18} color={colors.tailwind.stone[500]} />,
-            value: userdata ? userdata.email : 'Email'
+            value: ResumeContent?.email && ResumeContent.email !== '' ? ResumeContent?.email : 'Email'
         }, {
             icon: <MaterialCommunityIcons name="phone-outline" size={18} color={colors.tailwind.stone[500]} />,
-            value: userdata ? userdata.phonenumber : 'Phone Number'
+            value: ResumeContent?.phonenumber && ResumeContent.phonenumber !== '' ? ResumeContent?.phonenumber : 'Phone Number'
         }, {
             icon: <Feather name="map-pin" size={18} color={colors.tailwind.stone[500]} />,
-            value: userdata ? userdata.address : 'Address'
+            value: ResumeContent?.address && ResumeContent.address !== '' ? ResumeContent?.address : 'Address'
         }
 
     ]
 
+
+    if (isLoading || isFetching) {
+        return <Loading />
+    }
+
     return (
         <SafeAreaView className='h-screen relative bg-white'>
             <ResumeButton onPress={handleexpand} />
-            <ResumePreview Sheetref={BottomSheetRef} />
+            <ResumePreview Sheetref={BottomSheetRef} setisSheetOpen={setisSheetOpen}/>
 
-            <ScrollView>
-                <TitleBackButton title="Resume" className="p-5" />
-                <View style={styles.PersonalItem} className="flex flex-row justify-between items-start gap-4 m-5  py-6 px-5 rounded-lg">
-                    <View className="flex gap-3">
+            <ScrollView contentContainerStyle={{
+                margin: 10
+            }}>
+                <TitleBackButton title={data?.name} className="p-5" />
+                <View style={styles.PersonalItem} className="flex flex-row justify-between w-full items-start   py-6 px-5 rounded-lg">
+                    <View className="flex gap-3 w-[90%]">
+                        {ResumeContent?.profilepic && <View className='h-28 relative w-28 overflow-hidden  rounded-full flex items-center justify-center'>
+                            <Image
+                                source={ResumeContent.profilepic}
+                                style={{
+                                    height: '100%',
+                                    width: '100%'
+                                }}
+                                contentFit="cover"
+                                contentPosition={'center'}
+                            />
+                        </View>
+                        }
                         <View>
-                            <CustomText className="text-xl font-extrabold tracking-widest">{userdata ? <>{userdata.fullname}</> : <>Name</>}</CustomText>
-                            <CustomText className="text-stone-700 italic">{userdata ? <>{userdata.professionaltitle}</> : <>Professional Title</>}</CustomText>
+                            <CustomText className="text-xl font-extrabold tracking-widest">{ResumeContent?.fullname && ResumeContent?.fullname !== '' ? ResumeContent?.fullname : <>Name</>}</CustomText>
+                            <CustomText className="text-stone-700 italic">{ResumeContent?.professionaltitle && ResumeContent?.professionaltitle !== '' ? ResumeContent?.professionaltitle : <>Title</>}</CustomText>
                         </View>
                         {profileitems.map((item) => <View key={item.value} className="text-sm flex flex-row gap-3">
                             <CustomText className="text-stone-800">{item.icon}</CustomText>
-                            <CustomText>{item.value}</CustomText>
+                            <CustomText className="flex-1 flex-wrap w-full">{item.value}</CustomText>
                         </View>)}
                     </View>
 

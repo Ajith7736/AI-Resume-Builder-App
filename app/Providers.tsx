@@ -1,9 +1,9 @@
 import ToastComponent from '@/components/ui/toast'
 import { AuthProvider } from '@/context/AuthContext'
 import ContentProvider from '@/context/ContentContext'
+import { ResumeContentProvider } from '@/context/ResumeContentContext'
 import TemplateProvider from '@/context/TemplateContext'
 import ToastProvider from '@/context/ToastContext'
-import { UserDataProvider } from '@/context/UserDataContext'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
@@ -23,14 +23,14 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
                     <AuthProvider>
                         <TemplateProvider>
                             <ContentProvider>
-                                <UserDataProvider>
+                                <ResumeContentProvider>
                                     <ToastProvider>
                                         <BottomSheetModalProvider>
                                             {children}
                                             <ToastComponent />
                                         </BottomSheetModalProvider>
                                     </ToastProvider>
-                                </UserDataProvider>
+                                </ResumeContentProvider>
                             </ContentProvider>
                         </TemplateProvider>
                     </AuthProvider>

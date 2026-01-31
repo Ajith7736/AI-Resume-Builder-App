@@ -1,16 +1,15 @@
 import { Image } from "expo-image";
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "@/context/AuthContext";
-import { colors } from "@/components/ui/colors";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Loading from "@/components/ui/Loading";
+
 
 
 export default function Index() {
 
     const { isLoading, session } = useSession()
-
 
     if (isLoading || session) {
         return <Loading />

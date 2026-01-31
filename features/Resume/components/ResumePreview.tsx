@@ -1,5 +1,6 @@
 import { colors } from '@/components/ui/colors'
-import { useUserData } from '@/context/UserDataContext'
+import Loading from '@/components/ui/Loading'
+import { useResumeContent } from '@/context/ResumeContentContext'
 import { Template1 } from '@/lib/Templates/Template1'
 import { toast } from '@/lib/Toast/ToastUtility'
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
@@ -7,11 +8,10 @@ import * as FileSystem from 'expo-file-system/legacy'
 import * as Print from "expo-print"
 import * as Sharing from "expo-sharing"
 import React, { RefObject, useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
-import { Pressable } from 'react-native-gesture-handler'
+import { Linking, Pressable, Text, View } from 'react-native'
 import Pdf from 'react-native-pdf'
 
-const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | null> }) => {
+const ResumePreview = ({ Sheetref, setisSheetOpen }: { Sheetref: RefObject<BottomSheetModal | null>, setisSheetOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [Pdfdata, setPdfdata] = useState<{
         uri: string | null,
         base64: string | null | undefined
@@ -19,9 +19,9 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
         uri: null,
         base64: null
     })
-    const { userdata } = useUserData()
+    const { ResumeContent } = useResumeContent()
     const [numberofPages, setnumberofPages] = useState<number | null>(null)
-    const [pdfHeight, setpdfHeight] = useState<number>(0)
+    const [pdfHeight, setpdfHeight] = useState<number>(480)
 
 
 
@@ -34,12 +34,12 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
         return () => {
             clearTimeout(timeout)
         };
-    }, [userdata]);
+    }, [ResumeContent]);
 
     const generatePDF = async () => {
         try {
             const { uri, base64 } = await Print.printToFileAsync({
-                html: Template1(userdata ?? {}),
+                html: Template1(ResumeContent),
                 width: 595,
                 height: 842,
                 base64: true,
@@ -102,7 +102,7 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
 
 
     const BackDropComponent = (props: any) => {
-        return <BottomSheetBackdrop appearsOnIndex={1} disappearsOnIndex={-1}   {...props} />
+        return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1}   {...props} />
     }
 
 
@@ -122,10 +122,12 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
                 shadowRadius: 10,
                 width: "10%"
             }}
+            enableContentPanningGesture={false}
             enablePanDownToClose={true}
             backdropComponent={BackDropComponent}
+            onChange={(index) => { setisSheetOpen(index > 0) }}
         >
-            <BottomSheetScrollView className='p-30' contentContainerStyle={{
+            <BottomSheetScrollView className='p-4' contentContainerStyle={{
                 display: "flex",
                 alignItems: "center",
                 gap: "15",
@@ -137,11 +139,12 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
 
 
 
-                {Pdfdata.uri &&
+                {Pdfdata.uri ?
                     <Pdf
                         key={Pdfdata.uri}
                         source={{ uri: Pdfdata.uri, cache: false }}
-                        horizontal={false}
+                        horizontal={true}
+                        enablePaging={true}
                         style={{
                             width: 340,
                             height: pdfHeight,
@@ -150,10 +153,19 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
                             borderColor: colors.tailwind.neutral[200],
                             borderRadius: 4,
                         }}
-                        enableDoubleTapZoom
-
+                        enableAnnotationRendering={true}
+                        trustAllCerts={false}
+                        onPressLink={(url) => {
+                            console.log('Link pressed:', url);
+                            Linking.openURL(url);
+                        }}
+                        onPageSingleTap={(page, x, y) => {
+                            console.log('Single tap on page', page, 'at', x, y);
+                        }}
+                        enableDoubleTapZoom={true}
                         fitPolicy={0}
                         onLoadComplete={(numberofPages: any, filePath, { width, height }) => {
+
                             setnumberofPages(numberofPages)
 
                             const ratio = height / width;
@@ -162,7 +174,11 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
 
                             setpdfHeight(totalHeight)
                         }}
-                    />
+                    /> : <View style={{
+                        height: 430
+                    }}>
+                        <Loading />
+                    </View>
                 }
 
 
@@ -175,7 +191,8 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
                     gap: 15
                 }}>
                     <Pressable style={{
-                        boxShadow: "0 3px 10px rgb(0,0,0,0.12)"
+                        boxShadow: "0 3px 10px rgb(0,0,0,0.06)",
+                        borderRadius: 8,
                     }}
                         onPress={handleDownload}>
                         <Text style={{
@@ -185,11 +202,12 @@ const ResumePreview = ({ Sheetref }: { Sheetref: RefObject<BottomSheetModal | nu
                             paddingVertical: 16,
                             borderRadius: 8,
                             borderWidth: 1,
-                            borderColor: colors.tailwind.stone[300]
+                            borderColor: colors.tailwind.stone[200]
                         }} className='font-extrabold tracking-widest uppercase'>Download PDF</Text>
                     </Pressable>
                     <Pressable style={{
-                        boxShadow: "0 3px 10px rgb(0,0,0,0.12)"
+                        boxShadow: "0 3px 10px rgb(0,0,0,0.06)",
+                        borderRadius: 8
                     }}
                         onPress={handleShare}>
                         <Text style={{

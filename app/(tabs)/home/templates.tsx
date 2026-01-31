@@ -1,5 +1,9 @@
+import { useSession } from "@/context/AuthContext";
 import { UseTemplate } from "@/context/TemplateContext";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/lib/Toast/ToastUtility";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -10,9 +14,37 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Resume = () => {
     const [template, settemplate] = useState("")
-    const { setcurrenttemplate } = UseTemplate();
-
+    const { session } = useSession();
+    const queryclient = useQueryClient();
     const Templates = ['Template 1', 'Template 2']
+
+    const { data } = useQuery({
+        queryKey: ['ResumeName'],
+        queryFn: async () => {
+            const { data } = await supabase.from('Resume').select('name').eq('userId', session?.user.id as string)
+
+            return data;
+        }
+    })
+
+    const handlecreate = async (template : string) => {
+        const { data: res, error } = await supabase.from('Resume').upsert({
+            name: `Resume${data ? data.length + 1 : 1}`,
+            template,
+            userId: session?.user.id as string
+        }).select('id').single();
+
+        if (error) {
+            toast.error(error.message)
+        } else {
+            queryclient.invalidateQueries({
+                queryKey: ['Resumes']
+            })
+
+            router.push(`/resume/${res.id}`)
+        }
+
+    }
 
 
     return (
@@ -31,8 +63,7 @@ const Resume = () => {
             </View>
             {template && <Animated.View entering={FadeIn} exiting={FadeOut} className={"absolute bottom-20 right-10"}><Pressable className="bg-indigo-500 py-4 w-[10rem] rounded-md flex flex-row justify-center items-center gap-2"
                 onPress={() => {
-                    setcurrenttemplate(template)
-                    router.push("/resume/")
+                    handlecreate(template)
                 }}
             >
                 <Text className="text-white font-extrabold tracking-widest uppercase">Continue</Text>

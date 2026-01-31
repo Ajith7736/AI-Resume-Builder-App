@@ -1,5 +1,7 @@
+import { ResumeContentProps } from "@/types/types";
+import { ProfileSection } from "./ProfileSection";
 
-export function Template1(userdata: Record<string, string>): string {
+export function Template1(userdata: Partial<ResumeContentProps> | null): string {
 
     return /*html*/`
     <!DOCTYPE html>
@@ -75,13 +77,14 @@ export function Template1(userdata: Record<string, string>): string {
     <body>
     <div class='body'>
         <div>
-            <h1>${userdata.fullname || ''}</h1>
-            <p><em>${userdata.professionaltitle || ''}</em></p>
+            <h1>${userdata?.fullname || ''}</h1>
+            <p><em>${userdata?.professionaltitle || ''}</em></p>
         </div>
 
    
         <section>
-            <p> ajith.aju39502@gmail.com | +91 7736696075 | Palakkad, Kerala | <a href="http://github.com/Ajith7736" target="_blank">Github</a> | LinkedIn </p>
+            <p>${ProfileSection(userdata)}</p>
+            <a href="http://google.com">google</a>
         </section>
         <section>
             <h3>SUMMARY</h3>

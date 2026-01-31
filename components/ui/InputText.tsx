@@ -1,9 +1,11 @@
 import clsx from 'clsx';
 import React from 'react';
-import { Text, TextInput } from 'react-native';
+import { StyleProp, Text, TextInput, TextInputProps } from 'react-native';
+import { colors } from './colors';
 
 
-export default function RHFInput({ placeholder, onChange, value ,className }: { placeholder: string, onChange?: () => void, value?: string , className? : string }) {
+
+export default function RHFInput({ placeholder, onChange, value, className, style, shadow = false, ...props }: TextInputProps & { placeholder?: string, onChange?: () => void, value?: string, className?: string, style?: StyleProp<TextInput>, shadow?: boolean }) {
 
     return (
         <>
@@ -12,7 +14,14 @@ export default function RHFInput({ placeholder, onChange, value ,className }: { 
                 onChangeText={onChange}
                 value={value}
                 placeholderTextColor={"#a8a29e"}
-                className={clsx('px-3 py-3 border  border-stone-400/40 placeholder:font-medium tracking-widest rounded-md bg-stone-50',className)} />
+                style={{
+                    borderWidth: 1,
+                    borderColor: colors.tailwind.stone[200],
+                    boxShadow: shadow ? "0px 3px 10px rgba(0,0,0,0.06)" : ''
+                }}
+                {...props}
+                className={clsx('px-3 py-3 placeholder:font-medium tracking-widest rounded-md bg-stone-50', className)}
+            />
         </>
     )
 }
