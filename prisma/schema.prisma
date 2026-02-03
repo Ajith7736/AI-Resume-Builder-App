@@ -14,22 +14,58 @@ datasource db {
 }
 
 model User {
-  id        String   @id
-  email     String   @unique
-  fullname  String?
-  image     String?
-  Resume    Resume[]
-  createdAt DateTime @default(now())
+  id          String        @id
+  email       String        @unique
+  fullname    String?
+  image       String?
+  Resumes     Resume[]
+  Appications Application[]
+  createdAt   DateTime      @default(now())
 }
 
 model Resume {
-  id            String   @id @default(dbgenerated("gen_random_uuid()"))
-  name          String
+  id            String          @id @default(uuid())
   userId        String
-  User          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  template      String
-  ResumeContent Json?    @default("{}")
-  Customization Json?    @default("{}")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  resumeContent String
+  name          String
+  OldResumeChanges ResumeChanges[] @relation("OldResume")
+  NewResumeChanges ResumeChanges[] @relation("NewResume")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  User          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Application {
+  id          String @id @default(uuid())
+  userId      String
+  companyName String
+  roleTitle   String
+  resumeId    String
+  resumeUsed  String
+  Date        String
+  Industry    String
+  Status      Status @default(Applied)
+  User        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ResumeChanges {
+  id            String   @id @default(uuid())
+  old_resume_id String
+  new_resume_id String
+  changed       String
+  removed       String
+  notChanged    String
+  oldResume     Resume   @relation("OldResume", fields: [old_resume_id], references: [id])
+  newResume     Resume   @relation("NewResume", fields: [new_resume_id], references: [id])
+  dateChanged   DateTime @default(now())
+  resumeId      String?
+}
+
+enum Status {
+  Applied
+  Pending
+  Interviewing
+  No_Response
+  Rejected
+  Offer
 }

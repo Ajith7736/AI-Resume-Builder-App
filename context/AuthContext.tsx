@@ -1,4 +1,4 @@
-import { delay } from "@/lib/customdelay";
+
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { useRouter, useSegments } from "expo-router";

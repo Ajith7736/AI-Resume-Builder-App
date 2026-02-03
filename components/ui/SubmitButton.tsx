@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Pressable, Text } from 'react-native'
+import { Pressable } from 'react-native'
 
 const SubmitButton = ({ children, onPress, className }: { children: React.ReactNode, onPress: () => void, className?: string }) => {
   return (

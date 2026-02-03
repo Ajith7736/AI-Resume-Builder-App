@@ -1,7 +1,4 @@
 import { AuthProvider } from '@/context/AuthContext'
-import ContentProvider from '@/context/ContentContext'
-import { ResumeContentProvider } from '@/context/ResumeContentContext'
-import TemplateProvider from '@/context/TemplateContext'
 import ToastProvider from '@/context/ToastContext'
 import ToastComponent from '@/lib/Toast/toast'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
@@ -21,18 +18,12 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
             <SafeAreaProvider>
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider>
-                        <TemplateProvider>
-                            <ContentProvider>
-                                <ResumeContentProvider>
-                                    <ToastProvider>
-                                        <BottomSheetModalProvider>
-                                            {children}
-                                            <ToastComponent />
-                                        </BottomSheetModalProvider>
-                                    </ToastProvider>
-                                </ResumeContentProvider>
-                            </ContentProvider>
-                        </TemplateProvider>
+                                <ToastProvider>
+                                    <BottomSheetModalProvider>
+                                        {children}
+                                        <ToastComponent />
+                                    </BottomSheetModalProvider>
+                                </ToastProvider>
                     </AuthProvider>
                 </QueryClientProvider>
             </SafeAreaProvider>
