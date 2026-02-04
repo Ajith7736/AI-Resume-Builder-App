@@ -24,28 +24,29 @@ model User {
 }
 
 model Resume {
-  id            String          @id @default(uuid())
-  userId        String
-  resumeContent String
-  name          String
+  id               String          @id @default(uuid())
+  userId           String
+  resumeContent    String
+  name             String
   OldResumeChanges ResumeChanges[] @relation("OldResume")
   NewResumeChanges ResumeChanges[] @relation("NewResume")
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  User          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  User             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Application {
-  id          String @id @default(uuid())
-  userId      String
-  companyName String
-  roleTitle   String
-  resumeId    String
-  resumeUsed  String
-  Date        String
-  Industry    String
-  Status      Status @default(Applied)
-  User        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String @id @default(uuid())
+  userId         String
+  companyName    String
+  roleTitle      String
+  resumeId       String
+  resumeUsed     String
+  Date           String
+  Link           String
+  jobDescription String
+  Status         Status @default(Applied)
+  User           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ResumeChanges {

@@ -62,7 +62,7 @@ const GoogleSignInButton = () => {
     }
 
     return (
-        <Pressable className="bg-indigo-500 py-5 px-8 rounded-md flex flex-row items-center gap-4">
+        <Pressable className="bg-indigo-600 py-5 px-8 rounded-md flex flex-row items-center gap-4">
             <Text className="text-white tracking-widest font-semibold" onPress={SignIn}>Sign in with Google</Text>
             <Image
                 source={require('@/assets/images/google.png')}

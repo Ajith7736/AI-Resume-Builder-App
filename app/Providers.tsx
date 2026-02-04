@@ -14,7 +14,6 @@ const queryClient = new QueryClient();
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
             <SafeAreaProvider>
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider>
@@ -27,7 +26,6 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
                     </AuthProvider>
                 </QueryClientProvider>
             </SafeAreaProvider>
-        </GestureHandlerRootView >
     )
 }
 

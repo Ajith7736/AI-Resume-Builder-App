@@ -4,7 +4,7 @@ import { colors } from './colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-const RHFDatePicker = ({ onChange, value }: { onChange:  (...event: any[]) => void, value?: Date }) => {
+const RHFDatePicker = ({ onChange, value, error }: { error: boolean, onChange: (...event: any[]) => void, value?: Date }) => {
     const [isOpen, setisOpen] = useState<boolean>(false);
 
     const handleconfirm = (date: Date) => {
@@ -20,11 +20,12 @@ const RHFDatePicker = ({ onChange, value }: { onChange:  (...event: any[]) => vo
     return (
         <View className='flex gap-3'>
             <Pressable style={{
-                padding: 10,
-                backgroundColor: colors.tailwind.stone[100],
+                paddingHorizontal: 10,
+                paddingVertical : 14,
+                backgroundColor: colors.tailwind.slate[100],
                 borderWidth: 1,
-                borderRadius: 4,
-                borderColor: colors.tailwind.stone[300],
+                borderRadius: 8,
+                borderColor: error ? colors.tailwind.red[500] : colors.tailwind.slate[200],
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -32,8 +33,8 @@ const RHFDatePicker = ({ onChange, value }: { onChange:  (...event: any[]) => vo
             }}
                 onPress={() => setisOpen(true)}
             >
-                <Text className='text-stone-600 tracking-widest'>{value ? <>{value?.toLocaleDateString()}</> : <>Select Date</>}</Text>
-                <MaterialCommunityIcons name='calendar' color={'black'} size={16} />
+                <Text className='text-slate-600 tracking-widest'>{value ? <>{value?.toLocaleDateString()}</> : <>Select Date</>}</Text>
+                <MaterialCommunityIcons name='calendar' color={colors.tailwind.slate[500]} size={16} />
             </Pressable>
             <DateTimePicker
                 isVisible={isOpen}

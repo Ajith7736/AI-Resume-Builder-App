@@ -6,7 +6,8 @@ import { supabase } from "@/lib/supabase";
 import { AntDesign, Entypo, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useState } from "react";
-import { Button, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { Circle } from 'lucide-react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
@@ -17,52 +18,59 @@ const Settings = () => {
   const handlesignout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
-    if(error){
+    if (error) {
       setLoading(false);
     }
   }
 
-  if(loading){
+  if (loading) {
     return <Loading />
   }
 
 
   return (
-    <SafeAreaView className='flex-1 bg-white p-5 '>
-      <TitleBackButton title="Settings" />
-      <View className="mt-10 flex gap-5">
+    <SafeAreaView className='flex-1 bg-slate-50 p-5 '>
+      <View>
+        <Text className="text-2xl font-extrabold tracking-widest text-slate-700">Settings</Text>
+      </View>
+      <View className="mt-5 flex gap-5">
         <View style={{
-          backgroundColor: colors.tailwind.stone[50],
-          padding: 20,
+          backgroundColor: colors.tailwind.slate[50],
+          padding: 15,
           borderWidth: 1,
-          borderColor: colors.tailwind.stone[200],
+          borderColor: colors.tailwind.slate[200],
           borderRadius: 10,
           display: 'flex',
           gap: 3,
-          alignItems: "center",
-          boxShadow: "0 3px 10px rgb(0,0,0,0.04)"
+          alignItems: "flex-start",
         }}>
-          <View style={{
-            backgroundColor: colors.tailwind.gray[200]
-          }} className="bg-stone-100 h-14 w-14 rounded-full overflow-hidden">
-            <Image
-              source={session?.user.user_metadata.avatar_url ?? require('@/assets/images/person.png')}
-              style={{
-                height: '100%',
-                width: '100%'
-              }}
-              contentFit="cover"
-              contentPosition={'center'}
-            />
+          <Text className="text-xl font-bold tracking-widest text-slate-700">Profile</Text>
+          <View className="flex flex-row items-center gap-5 mt-2">
+            <View style={{
+              backgroundColor: colors.tailwind.gray[200]
+            }} className="bg-slate-100 h-14 w-14 rounded-full overflow-hidden">
+              <Image
+                source={session?.user.user_metadata.avatar_url ?? require('@/assets/images/person.png')}
+                style={{
+                  height: '100%',
+                  width: '100%'
+                }}
+                contentFit="cover"
+                contentPosition={'center'}
+              />
+            </View>
+            <View>
+              <Text className="font-bold text-slate-700 text-lg">{session?.user.user_metadata.name}</Text>
+              <Text className="text-slate-600 italic">{session?.user.email}</Text>
+            </View>
           </View>
-          <Text className="font-bold mt-5 text-lg">{session?.user.user_metadata.name}</Text>
-          <Text className="text-stone-600 italic">{session?.user.email}</Text>
+
         </View>
 
         <View style={{
-          backgroundColor: colors.tailwind.stone[50],
+          backgroundColor: colors.tailwind.slate[50],
           borderWidth: 1,
-          borderColor: colors.tailwind.stone[200],
+          borderColor: colors.tailwind.slate[200],
           borderRadius: 10
         }}>
           <Pressable style={{
@@ -73,11 +81,11 @@ const Settings = () => {
             alignItems: "center",
             justifyContent: 'space-between',
             borderBottomWidth: 1,
-            borderBottomColor: colors.tailwind.stone[200],
+            borderBottomColor: colors.tailwind.slate[200],
           }}>
             <View className="flex flex-row gap-8 items-center">
               <AntDesign name="exclamation-circle" size={20} />
-              <Text className="tracking-widest">About App</Text>
+              <Text className="tracking-widest text-slate-700">About App</Text>
             </View>
 
             <Entypo name="chevron-right" size={20} color="black" />

@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSession } from "@/context/AuthContext";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Loading from "@/components/ui/Loading";
+import { Link } from "expo-router";
 
 
 
@@ -19,7 +20,7 @@ export default function Index() {
         <SafeAreaView className="min-h-screen flex flex-col items-center justify-between p-10 ">
             <View className="flex w-full ">
                 <Text className="text-center text-3xl font-bold tracking-widest w-full text-stone-700">Welcome</Text>
-                <Text className="text-center tracking-widest italic text-stone-600"> Sign in to start building your first professional resume.</Text>
+                <Text className="text-center tracking-widest italic text-stone-600"> Sign in to start tracking your multiple resumes.</Text>
             </View>
 
             <View className="flex flex-row gap-8">

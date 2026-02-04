@@ -1,10 +1,11 @@
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
-import { LogBox,  } from 'react-native';
+import { LogBox, } from 'react-native';
 import 'react-native-gesture-handler';
 import "../lib/reanimatedConfig"; // Must be first - configures Reanimated
 import "./globals.css";
 import Providers from "./Providers";
+import { useSession } from "@/context/AuthContext";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +18,29 @@ if (__DEV__) {
   ]);
 }
 
+function InitialLayout() {
+
+  const { session } = useSession();
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        animation: "fade",
+      }}
+    >
+      <Stack.Protected guard={!!session?.user}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!session?.user}>
+        <Stack.Screen name="index" />
+      </Stack.Protected>
+
+    </Stack>
+  )
+}
+
 
 
 export default function RootLayout() {
@@ -24,12 +48,7 @@ export default function RootLayout() {
   return (
     <Providers>
       <StatusBar style="light" backgroundColor="transparent" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          animation: "fade"
-        }}
-      />
+      <InitialLayout />
     </Providers>
   );
 }

@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [session, setsession] = useState<Session | null>(null);
     const segment = useSegments();
     const router = useRouter();
-    const protectedRoutes = new Set(['(tabs)', 'resume']);
 
     useEffect(() => {
 
@@ -33,17 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             AuthListener.subscription.unsubscribe();
         }
     }, [])
-
-    useEffect(() => {
-        if (isLoading) return;
-
-        if (!session && protectedRoutes.has(segment[0])) {
-            router.replace('/')
-        } else if (session && !protectedRoutes.has(segment[0])) {
-            router.replace('/(tabs)/home')
-        }
-
-    }, [session, segment, isLoading])
 
 
 
