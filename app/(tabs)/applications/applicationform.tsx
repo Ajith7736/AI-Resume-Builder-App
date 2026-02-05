@@ -1,23 +1,39 @@
-import { colors } from '@/components/ui/colors'
-import React from 'react'
-import { KeyboardAvoidingView, Text, View } from 'react-native'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import RHFInput from '@/components/ui/InputText'
 import RHFDatePicker from '@/components/ui/RHFDatePicker'
 import RHFDropDown from '@/components/ui/RHFDropDown'
-import { ApplicationInputs, ApplicationSchema } from '@/lib/Schema/ApplicationForm'
-import { ArrowRight, Scroll } from 'lucide-react-native'
-import { ScrollView } from 'react-native'
 import SubmitButton from '@/components/ui/SubmitButton'
+import { useSession } from '@/context/AuthContext'
+import { delay } from '@/lib/customdelay'
+import { ApplicationInputs, ApplicationSchema } from '@/lib/Schema/ApplicationForm'
+import { supabase } from '@/lib/supabase'
+import { toast } from '@/lib/Toast/ToastUtility'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { router } from 'expo-router'
+import { ArrowRight } from 'lucide-react-native'
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { ActivityIndicator, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native'
 
 const ApplicationForm = () => {
 
+  const { session } = useSession();
+  const [dots, setdots] = useState("")
 
-  const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm<ApplicationInputs>({
-    resolver: zodResolver(ApplicationSchema)
+  const { control, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } = useForm<ApplicationInputs>({
+    resolver: zodResolver(ApplicationSchema),
+    defaultValues: {
+      companyName: "",
+      date: undefined,
+      jobDescription: '',
+      link: '',
+      resumeId: '',
+      resumeUsed: '',
+      roleTitle: '',
+      status: undefined
+    }
   })
+
+
 
 
   const resumedata = [
@@ -35,9 +51,46 @@ const ApplicationForm = () => {
     { name: 'Offer' },
   ]
 
-  const handlesubmit: SubmitHandler<ApplicationInputs> = (data) => {
-    console.log(data)
-  }
+
+  const onSubmit = async (data: ApplicationInputs) => {
+    await delay(1);
+    const { error } = await supabase.from('Application').upsert({
+      companyName: data.companyName,
+      Date: data.date?.toLocaleDateString() || "",
+      jobDescription: data.jobDescription || "",
+      Link: data.link || "",
+      resumeId: data.resumeId,
+      resumeUsed: data.resumeUsed,
+      roleTitle: data.roleTitle,
+      Status: data.status,
+      userId: session?.user.id as string
+    })
+
+    if (error) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+
+    router.push('/(tabs)/applications');
+  };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      const interval = setInterval(() => {
+        setdots(prev => {
+          if (prev === "...") {
+            return ""
+          }
+          return prev + "."
+        })
+      }, 100)
+
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [isSubmitting, dots])
+
 
   return (
     <View style={{ padding: 30 }} className='h-screen bg-slate-50'>
@@ -75,7 +128,7 @@ const ApplicationForm = () => {
               control={control}
               name='resumeUsed'
               render={({ field: { value, onChange }, formState: { errors } }) => {
-                return <RHFDropDown placeholder='Select Resume' dropdata={resumedata} onChange={onChange} value={value} setValue={setValue} />
+                return <RHFDropDown placeholder='Select Resume' error={errors.resumeUsed?.message ? true : false} dropdata={resumedata} onChange={onChange} value={value} setValue={setValue} />
               }}
             />
             <View className='flex flex-row items-center w-full gap-3'>
@@ -89,7 +142,7 @@ const ApplicationForm = () => {
                   control={control}
                   name='date'
                   render={({ field: { value, onChange }, formState: { errors } }) => {
-                    return <RHFDatePicker value={value} onChange={onChange} error={errors.roleTitle?.message ? true : false} />
+                    return <RHFDatePicker value={value} onChange={onChange} error={errors.date?.message ? true : false} />
                   }}
                 />
               </View>
@@ -103,7 +156,7 @@ const ApplicationForm = () => {
                   control={control}
                   name='status'
                   render={({ field: { value, onChange }, formState: { errors } }) => {
-                    return <RHFDropDown placeholder='Select Status' value={value} onChange={onChange} dropdata={Status} />
+                    return <RHFDropDown placeholder='Select Status' value={value} error={errors.status?.message ? true : false} onChange={onChange} dropdata={Status} />
                   }}
                 />
               </View>
@@ -118,7 +171,7 @@ const ApplicationForm = () => {
               control={control}
               name='jobDescription'
               render={({ field: { value, onChange }, formState: { errors } }) => {
-                return <RHFInput value={value} onChange={onChange} error={errors.companyName?.message ? true : false} placeholder='Company Name' />
+                return <RHFInput value={value} onChange={onChange} placeholder='Job Description' />
               }}
             />
 
@@ -129,15 +182,19 @@ const ApplicationForm = () => {
               control={control}
               name='link'
               render={({ field: { value, onChange }, formState: { errors } }) => {
-                return <RHFInput value={value} onChange={onChange} error={errors.companyName?.message ? true : false} placeholder='Company Name' />
+                return <RHFInput value={value} onChange={onChange} placeholder='Paste link here' />
               }}
             />
           </View>
-          <SubmitButton onPress={() => handleSubmit(handlesubmit)} className=' mt-10'>
-            <View className='flex flex-row items-center justify-center'>
+          <SubmitButton onPress={handleSubmit(onSubmit)} className=' mt-10'>
+            {isSubmitting ? <View className='flex flex-row items-center gap-1 justify-center'>
+              <Text className='text-white tracking-widest font-bold text-center'>Saving </Text>
+              <Text className='text-white w-4'>{dots}</Text>
+              {/* <ActivityIndicator size={'small'} color={'white'} /> */}
+            </View> : <View className='flex flex-row items-center justify-center'>
               <Text className='text-white tracking-widest font-bold text-center '>Save Application </Text>
               <ArrowRight color={'white'} size={18} />
-            </View>
+            </View>}
           </SubmitButton>
         </ScrollView>
       </KeyboardAvoidingView>

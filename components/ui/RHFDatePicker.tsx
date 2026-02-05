@@ -1,10 +1,10 @@
-import { View, Text, Pressable } from 'react-native'
-import React, { useState } from 'react'
-import { colors } from './colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { colors } from './colors';
 
-const RHFDatePicker = ({ onChange, value, error }: { error: boolean, onChange: (...event: any[]) => void, value?: Date }) => {
+const RHFDatePicker = ({ onChange, value, error }: { error: boolean, onChange: (...event: any[]) => void, value: Date | null }) => {
     const [isOpen, setisOpen] = useState<boolean>(false);
 
     const handleconfirm = (date: Date) => {
@@ -21,7 +21,7 @@ const RHFDatePicker = ({ onChange, value, error }: { error: boolean, onChange: (
         <View className='flex gap-3'>
             <Pressable style={{
                 paddingHorizontal: 10,
-                paddingVertical : 14,
+                paddingVertical: 14,
                 backgroundColor: colors.tailwind.slate[100],
                 borderWidth: 1,
                 borderRadius: 8,
@@ -33,7 +33,7 @@ const RHFDatePicker = ({ onChange, value, error }: { error: boolean, onChange: (
             }}
                 onPress={() => setisOpen(true)}
             >
-                <Text className='text-slate-600 tracking-widest'>{value ? <>{value?.toLocaleDateString()}</> : <>Select Date</>}</Text>
+                <Text className='text-slate-600 tracking-widest'>{value ? <>{value.toLocaleDateString()}</> : <>Select Date</>}</Text>
                 <MaterialCommunityIcons name='calendar' color={colors.tailwind.slate[500]} size={16} />
             </Pressable>
             <DateTimePicker

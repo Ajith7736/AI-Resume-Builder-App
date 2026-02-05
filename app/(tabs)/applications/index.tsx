@@ -1,11 +1,66 @@
 import { colors } from '@/components/ui/colors'
+import Loading from '@/components/ui/Loading'
+import { useSession } from '@/context/AuthContext'
+import ApplicationCard from '@/features/Application/components/ApplicationCard'
+import { supabase } from '@/lib/supabase'
+import { toast } from '@/lib/Toast/ToastUtility'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'expo-router'
-import { Building, Calendar, ExternalLink, Plus, Search, Trash2 } from 'lucide-react-native'
-import React from 'react'
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native'
+import { ClipboardList, Plus, Search } from 'lucide-react-native'
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react'
+import { Pressable, ScrollView, Text, TextInput, TextInputChangeEvent, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const applications = () => {
+
+  const { session } = useSession();
+  const [SearchText, setSearchText] = useState<string>("")
+  const [DebounceText, setDebounceText] = useState<string>("")
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["Applications"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('Application').select("*").eq("userId", session?.user.id as string)
+
+      if (error) {
+        toast.error(error.message);
+        console.error(error.message);
+        throw new Error(error.message)
+      }
+
+      return data;
+    },
+    enabled: !!session?.user
+  })
+
+  const filteredApplications = useMemo(() => {
+
+    if (!data) return
+
+    if (!DebounceText) return data;
+
+    return data?.filter((application) => {
+      return application.companyName.toLowerCase().trim().includes(DebounceText.toLowerCase().trim()) ||
+        application.roleTitle.toLowerCase().trim().includes(DebounceText.toLowerCase().trim())
+    })
+  }, [DebounceText, data])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebounceText(SearchText)
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [SearchText])
+
+
+
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <>
       <SafeAreaView className='h-screen relative w-full bg-slate-50 p-5'>
@@ -13,7 +68,7 @@ const applications = () => {
           position: 'absolute',
           bottom: 120,
           right: 30,
-          zIndex : 20,
+          zIndex: 20,
           backgroundColor: colors.tailwind.indigo[500],
           height: 60,
           width: 60,
@@ -37,60 +92,26 @@ const applications = () => {
               </Text>
             </View>
 
-            <View className='flex flex-row w-full items-center border px-2 bg-white gap-2 border-slate-200 rounded-lg  '>
-              <View className='w-[10%]'>
+            <View className='flex flex-row w-full items-center border px-2 bg-white gap-1 border-slate-200 rounded-[12px]  '>
+              <View className='w-[5%]'>
                 <Search size={18} color={colors.tailwind.slate[300]} />
               </View>
-              <View className='w-full'>
-                <TextInput placeholder='Search Jobs...' placeholderTextColor={colors.tailwind.slate[300]} className=' text-slate-700 w-[20rem] bg-red-500 tracking-widest' />
+              <View className='w-[95%]'>
+                <TextInput value={SearchText} onChange={(e) => setSearchText(e.nativeEvent.text)} placeholder='Search Jobs...' placeholderTextColor={colors.tailwind.slate[300]} className=' text-slate-700 w-[20rem] tracking-widest' />
               </View>
             </View>
 
-            <View className='bg-white rounded-[25px] border border-slate-200 p-5 flex flex-col gap-5'>
-
-              <View className='flex flex-row justify-between items-center'>
-                <View className='flex flex-row items-center gap-3'>
-                  <View className='bg-slate-100 w-fit rounded-lg p-3'>
-                    <Building color={colors.tailwind.slate[300]} />
-                  </View>
-                  <View>
-                    <Text className='font-extrabold tracking-widest'>Company Name</Text>
-                    <Text className='text-xs text-slate-500 tracking-widest'>Role Title</Text>
-                  </View>
-                </View>
-                <View>
-                  <Trash2 color={colors.tailwind.slate[300]} />
-                </View>
+            {(filteredApplications && filteredApplications?.length > 0) ? filteredApplications?.map((application) => {
+              return <ApplicationCard refetch={refetch} key={application.id} data={application} />
+            }) : <View className='h-[47rem] flex items-center justify-center gap-2'>
+              <View className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center  mx-auto border border-slate-200 shadow-sm">
+                <ClipboardList size={40} color={colors.tailwind.slate[300]}/>
               </View>
-
-              <View>
-                <View className='flex flex-row gap-3'>
-                  <Text className='text-slate-700 font-bold tracking-widest' style={{ fontSize: 12 }}>RESUME :</Text>
-                  <Text className='text-slate-700 tracking-widest' style={{ fontSize: 12 }}>Resume Name</Text>
-                </View>
-              </View>
-
-              <View className='flex flex-row justify-between items-center'>
-                <View>
-                  <Text style={{
-                    color: colors.tailwind.emerald[500],
-                    backgroundColor: colors.tailwind.emerald[200],
-                    borderWidth: 1,
-                    borderColor: colors.tailwind.emerald[500]
-                  }} className=' font-extrabold px-3 py-1 text-xs rounded-full'>OFFER</Text>
-                </View>
-                <View className='flex flex-row items-center gap-2'>
-                  <View className='flex flex-row gap-2 items-center'>
-                    <Calendar size={15} color={colors.tailwind.slate[400]} />
-                    <Text className='text-slate-600 text-xs font-bold'>FEB 23</Text>
-                  </View>
-                  <View className='bg-slate-100 w-fit rounded-full p-3'>
-                    <ExternalLink size={15} color={colors.tailwind.slate[600]} />
-                  </View>
-                </View>
-              </View>
-
-            </View>
+              <Text className='text-[16px] text-center text-slate-800 font-bold tracking-widest'>No Applications</Text>
+              <Text className="text-[12px] text-slate-500 text-center w-96 tracking-wider">
+                Your job search history will appear here. Tap the + to start logging.
+              </Text>
+            </View>}
 
           </View>
         </ScrollView>

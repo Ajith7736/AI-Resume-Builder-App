@@ -7,7 +7,8 @@ import {
     statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
-import { Pressable, Text } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
 
 
 GoogleSignin.configure({
@@ -15,9 +16,11 @@ GoogleSignin.configure({
 });
 
 const GoogleSignInButton = () => {
+    const [isLoading, setisLoading] = useState(false)
 
     const SignIn = async () => {
         try {
+            setisLoading(true)
             await GoogleSignin.hasPlayServices();
             const res = await GoogleSignin.signIn();
             if (isSuccessResponse(res)) {
@@ -35,7 +38,7 @@ const GoogleSignInButton = () => {
                     })
 
                     if (dberror) {
-                        console.error(dberror);
+                        console.error(dberror.message);
                         toast.error("Something went wrong!")
                     }
                 }
@@ -58,19 +61,23 @@ const GoogleSignInButton = () => {
             } else {
                 toast.error('Something went wrong!')
             }
+        } finally {
+            setisLoading(false);
         }
     }
 
     return (
-        <Pressable className="bg-indigo-600 py-5 px-8 rounded-md flex flex-row items-center gap-4">
-            <Text className="text-white tracking-widest font-semibold" onPress={SignIn}>Sign in with Google</Text>
-            <Image
-                source={require('@/assets/images/google.png')}
-                style={{
-                    height: 20,
-                    width: 20
-                }}
-            />
+        <Pressable className="bg-indigo-600 w-64 h-12 rounded-md flex flex-row items-center justify-center gap-4">
+            {isLoading ? <ActivityIndicator size={'small'} color={'white'} /> : <><Text className="text-white tracking-widest font-semibold" onPress={SignIn}>Sign in with Google</Text>
+                <Image
+                    source={require('@/assets/images/google.png')}
+                    style={{
+                        height: 20,
+                        width: 20
+                    }}
+                />
+            </>
+            }
         </Pressable>
     )
 }

@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react-native'
 import { UseFormSetValue } from 'react-hook-form'
 import { ApplicationInputs } from '@/lib/Schema/ApplicationForm'
 
-const RHFDropDown = ({ onChange, value, setValue, dropdata, placeholder }: { onChange: Function, value: string, setValue?: UseFormSetValue<ApplicationInputs>, dropdata: Record<string, string>[], placeholder: string }) => {
+const RHFDropDown = ({ onChange, value, setValue, dropdata, placeholder, error }: { onChange: Function, value: string, setValue?: UseFormSetValue<ApplicationInputs>, dropdata: Record<string, string>[], placeholder: string, error?: boolean }) => {
     const [expanded, setexpanded] = useState(false);
 
 
@@ -18,7 +18,7 @@ const RHFDropDown = ({ onChange, value, setValue, dropdata, placeholder }: { onC
     }
 
     const handleselect = () => {
-        onChange('')
+        onChange(undefined)
         setexpanded(false);
     }
 
@@ -30,7 +30,7 @@ const RHFDropDown = ({ onChange, value, setValue, dropdata, placeholder }: { onC
                 backgroundColor: colors.tailwind.slate[100],
                 borderWidth: 1,
                 borderRadius: 8,
-                borderColor: colors.tailwind.slate[200]
+                borderColor: error ? colors.tailwind.red[500] : colors.tailwind.slate[200]
             }} >
                 <View style={{
                     display: 'flex',

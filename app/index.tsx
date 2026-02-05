@@ -5,12 +5,33 @@ import { useSession } from "@/context/AuthContext";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import Loading from "@/components/ui/Loading";
 import { Link } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/lib/Toast/ToastUtility";
 
 
 
 export default function Index() {
 
     const { isLoading, session } = useSession()
+
+    // const { data } = useQuery({
+    //     queryKey: ["Applications"],
+    //     queryFn: async () => {
+    //         const { data, error } = await supabase.from('Application').select("*").eq("userId", session?.user.id as string)
+
+    //         if (error) {
+    //             toast.error(error.message);
+    //             console.error(error.message);
+    //             throw new Error(error.message)
+    //         }
+
+    //         return data;
+    //     },
+    //     enabled: !!session?.user
+    // })
+
+
 
     if (isLoading || session) {
         return <Loading />

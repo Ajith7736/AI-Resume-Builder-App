@@ -52,7 +52,8 @@ export type Database = {
           companyName: string
           Date: string
           id: string
-          Industry: string
+          jobDescription: string
+          Link: string
           resumeId: string
           resumeUsed: string
           roleTitle: string
@@ -62,8 +63,9 @@ export type Database = {
         Insert: {
           companyName: string
           Date: string
-          id: string
-          Industry: string
+          id?: string
+          jobDescription: string
+          Link: string
           resumeId: string
           resumeUsed: string
           roleTitle: string
@@ -74,7 +76,8 @@ export type Database = {
           companyName?: string
           Date?: string
           id?: string
-          Industry?: string
+          jobDescription?: string
+          Link?: string
           resumeId?: string
           resumeUsed?: string
           roleTitle?: string
@@ -102,7 +105,7 @@ export type Database = {
         }
         Insert: {
           createdAt?: string
-          id: string
+          id?: string
           name: string
           resumeContent: string
           updatedAt: string
@@ -140,7 +143,7 @@ export type Database = {
         Insert: {
           changed: string
           dateChanged?: string
-          id: string
+          id?: string
           new_resume_id: string
           notChanged: string
           old_resume_id: string
