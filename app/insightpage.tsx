@@ -1,7 +1,7 @@
-import { View, Text, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, Pressable, ActivityIndicator } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Info, RefreshCcw } from 'lucide-react-native'
+import { AlertCircle, AlertTriangle, Brain, CheckCircle2, Info, RefreshCcw } from 'lucide-react-native'
 import { colors } from '@/components/ui/colors'
 import TitleBackButton from '@/components/ui/TitleBackButton'
 import Animated, {
@@ -11,16 +11,39 @@ import Animated, {
     withRepeat,
     Easing,
 } from 'react-native-reanimated';
+import { useSession } from '@/context/AuthContext'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { supabase } from '@/lib/supabase'
+import { FlatList } from 'react-native'
+import { insight } from '@/lib/Schema/OutputSchema'
+import { api } from '@/lib/Utils/FetchUtils'
+import { toast } from '@/lib/Toast/ToastUtility'
 
 const Insightpage = () => {
     const [isLoading, setisLoading] = useState(false)
     const Animatedloader = Animated.createAnimatedComponent(RefreshCcw)
+    const { session } = useSession()
+    const queryClient = useQueryClient()
 
     const rotate = useSharedValue(0)
 
+    const { data, isFetching } = useQuery({
+        queryKey: ['insight'],
+        queryFn: async () => {
+            const { data, error } = await supabase.from('Insights').select('data').eq('userId', session?.user.id as string).maybeSingle();
+
+            if (error) {
+                console.log(error.message)
+                throw new Error('Server Error')
+            }
+
+            return data?.data as insight[];
+        }
+    })
+
 
     useEffect(() => {
-        if (isLoading) {
+        if (isLoading || isFetching) {
             rotate.value = withRepeat(withTiming(360, {
                 duration: 1000,
                 easing: Easing.ease
@@ -28,7 +51,7 @@ const Insightpage = () => {
         } else {
             rotate.value = 0
         }
-    }, [isLoading])
+    }, [isLoading, isFetching])
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
@@ -41,14 +64,37 @@ const Insightpage = () => {
     }
     )
 
+    const handlegetinsight = async () => {
+        try {
+            setisLoading(true);
+            const data = await api.post({ userId: session?.user.id }, '/api/getinsight');
+
+            if (data.success) {
+                await queryClient.invalidateQueries({
+                    queryKey: ['insight']
+                })
+            }
+        } catch (err) {
+            console.log(err)
+            toast.error('Server Error')
+        } finally {
+            setisLoading(false)
+        }
+    }
 
 
-    const statusColors = {
-        info: { text: colors.tailwind.blue[700], bg: colors.tailwind.blue[100]  },
-        success: { text: colors.tailwind.green[700], bg: colors.tailwind.green[100] },
-        warning: { text: colors.tailwind.amber[700], bg: colors.tailwind.amber[100] },
-        error: { text: colors.tailwind.red[700], bg: colors.tailwind.red[100] },
+
+    const statusColors: Record<string, {
+        text: string,
+        bg: string,
+        icon: ReactElement
+    }> = {
+        info: { text: colors.tailwind.blue[700], bg: colors.tailwind.blue[50], icon: <Info  color={colors.tailwind.blue[700]} /> },
+        success: { text: colors.tailwind.green[700], bg: colors.tailwind.green[50], icon: <CheckCircle2  color={colors.tailwind.green[700]} /> },
+        warning: { text: colors.tailwind.amber[700], bg: colors.tailwind.amber[50], icon: <AlertTriangle color={colors.tailwind.amber[700]} /> },
+        error: { text: colors.tailwind.red[700], bg: colors.tailwind.red[50], icon: <AlertCircle color={colors.tailwind.red[700]} /> },
     };
+
 
 
 
@@ -58,32 +104,58 @@ const Insightpage = () => {
             <View className='flex flex-row items-center justify-between'>
                 <View className='flex gap-1'>
                     <TitleBackButton title='Analysis' />
-                    <Text className="text-[11px] pl-10 text-slate-500 font-bold tracking-wider">
-                        Daily summary of your progress
-                    </Text>
                 </View>
-                <Pressable onPress={() => setisLoading(!isLoading)} className='p-3 bg-white border border-slate-200 rounded-lg'>
+                <Pressable onPress={handlegetinsight} className='p-3 bg-white border border-slate-200 rounded-lg'>
                     <Animatedloader style={animatedStyle} color={colors.tailwind.indigo[600]} size={20} />
                 </Pressable>
             </View>
 
 
-            <View className='m-3 mt-10'>
-                <View className='w-full flex gap-3 p-6 rounded-[18px] border border-slate-200 bg-white'>
-                    <View className='w-full flex flex-row  items-center gap-5'>
-                        <View className='p-3 bg-white border border-slate-200 rounded-lg'>
-                            <Info color={statusColors['info'].text} />
+            <View className='m-3 '>
+
+                {isLoading || isFetching ? <View style={{
+                    display: 'flex',
+                    paddingTop: 50,
+                    gap: 8
+                }}>
+                    <ActivityIndicator color={colors.tailwind.slate[300]} />
+                    <Text className='text-center text-sm tracking-widest text-slate-300 '>Loading</Text>
+                </View> : data && data.length > 0 ? <FlatList
+                    data={data}
+                    contentContainerStyle={{
+                        display: 'flex',
+                        gap: 10,
+                        paddingBottom: 30
+                    }}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => {
+                        return <View style={{
+                            backgroundColor: statusColors[item.type].bg
+                        }} className='w-full flex gap-1 p-6 rounded-[18px] border border-slate-200 bg-white'>
+                            <View className='w-full flex flex-row items-center gap-2'>
+                                <View className='p-2 bg-white border border-slate-300  rounded-lg'>
+                                    {statusColors[item.type].icon}
+                                </View>
+                                <Text className='text-sm font-bold tracking-widest w-[76%] text-slate-800'>{item.title}</Text>
+                            </View>
+                            <View className='py-1 rounded-md'>
+                                <Text className="text-[11px] px-2 py-1 tracking-widest">
+                                    {item.message}
+                                </Text>
+                            </View>
                         </View>
-                        <Text className=' font-bold tracking-widest text-slate-800'>AI Insights</Text>
+                    }}
+                /> : <View style={{
+                    height: 570
+                }} className=' flex items-center justify-center gap-2'>
+                    <View className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center  mx-auto border border-slate-200 shadow-sm">
+                        <Brain size={40} color={colors.tailwind.slate[800]} />
                     </View>
-                    <View style={{
-                        backgroundColor: statusColors['info'].bg
-                    }} className='px-2 py-3 rounded-md'>
-                        <Text className="text-[11px] px-2 py-1 tracking-widest">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, ullam nobis enim perspiciatis possimus blanditiis molestias sapiente rem, et natus ipsam quasi dolor.
-                        </Text>
-                    </View>
-                </View>
+                    <Text className='text-[16px] text-center text-slate-800 font-bold tracking-widest'>No Insights</Text>
+                    <Text className="text-[12px] text-slate-500 text-center w-96 tracking-wider">
+                        Your insight will appear here.
+                    </Text>
+                </View>}
             </View>
         </SafeAreaView>
     )

@@ -3,17 +3,11 @@ import { google } from '@ai-sdk/google'
 import { generateText, Output } from 'ai'
 import prisma from "@/lib/prisma";
 import { getprompt } from "@/lib/prompt/PromptText";
+import { Outputschema } from "@/lib/Schema/OutputSchema";
 
 export async function POST(request: Request) {
     try {
         const { userId } = await request.json();
-
-        const schema = z.array(z.object({
-            icon: z.string(),
-            type: z.enum(["info", "success", "warning", "error"]),
-            title: z.string(),
-            message: z.string()
-        }))
 
         const data = await prisma.user.findUnique({
             where: {
@@ -46,7 +40,7 @@ export async function POST(request: Request) {
             model: google('gemini-2.5-flash'),
             prompt: prompt,
             output: Output.object({
-                schema
+                schema : Outputschema
             })
         })
 
@@ -54,13 +48,20 @@ export async function POST(request: Request) {
             return Response.json({ success: true, message: 'No insights' }, { status: 200 })
         }
 
+        const outputwithid = output.map((item) => {
+            return {
+                ...item,
+                id : crypto.randomUUID()
+            }
+        })
+
         await prisma.insights.upsert({
             where : {
                 userId 
             },
             create : {
                 userId,
-                data : output
+                data : outputwithid
             },
             update : {
                 data : output
