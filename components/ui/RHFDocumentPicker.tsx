@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import * as DocumentPicker from 'expo-document-picker'
 import { CloudUpload } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { Pressable, Text } from 'react-native'
+import { Platform, Pressable, Text } from 'react-native'
 import { colors } from './colors'
 
 const RHFDocumentPicker = ({ onChange, errors }: { onChange: (...event: any[]) => void, errors: string | undefined }) => {
@@ -31,7 +31,7 @@ const RHFDocumentPicker = ({ onChange, errors }: { onChange: (...event: any[]) =
 
 
 
-            const res = await fetch('/api/pdfextract', {
+            const res = await fetch(`${Platform.OS == 'web' ?  "" :  process.env.EXPO_PUBLIC_BASE_URL ?? '' }/api/pdfextract`, {
                 method: 'POST',
                 body: blob,
                 headers: {

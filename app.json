@@ -1,27 +1,27 @@
 {
   "expo": {
-    "name": "Resumeai",
-    "slug": "resume-builder",
+    "name": "RezuTrack",
+    "slug": "resume-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "resumeai",
+    "scheme": "rezutrack",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "backgroundColor": "#ffffff",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.resumeai.builder"
+      "bundleIdentifier": "com.rezutrack.builder"
     },
     "android": {
       "backgroundColor": "#ffffff",
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
-        "foregroundImage": "./assets/images/Resumeai-icon.png"
+        "foregroundImage": "./assets/images/icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.resumeai.builder",
+      "package": "com.rezutrack.builder",
       "permissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",

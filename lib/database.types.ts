@@ -106,18 +106,24 @@ export type Database = {
       }
       Insights: {
         Row: {
+          createdAt: string
           data: Json
           id: string
+          updatedAt: string
           userId: string
         }
         Insert: {
+          createdAt?: string
           data: Json
           id?: string
+          updatedAt: string
           userId: string
         }
         Update: {
+          createdAt?: string
           data?: Json
           id?: string
+          updatedAt?: string
           userId?: string
         }
         Relationships: [

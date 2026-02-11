@@ -77,10 +77,12 @@ model ResumeChanges {
 }
 
 model Insights {
-  id     String @id @default(dbgenerated("gen_random_uuid()"))
-  userId String @unique
-  data   Json
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  userId    String   @unique
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

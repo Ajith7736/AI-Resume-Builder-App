@@ -1,9 +1,8 @@
-import z, { success } from "zod";
-import { google } from '@ai-sdk/google'
-import { generateText, Output } from 'ai'
 import prisma from "@/lib/prisma";
 import { getprompt } from "@/lib/prompt/PromptText";
 import { Outputschema } from "@/lib/Schema/OutputSchema";
+import { google } from '@ai-sdk/google';
+import { generateText, Output } from 'ai';
 
 export async function POST(request: Request) {
     try {
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
             model: google('gemini-2.5-flash'),
             prompt: prompt,
             output: Output.object({
-                schema : Outputschema
+                schema: Outputschema
             })
         })
 
@@ -51,20 +50,20 @@ export async function POST(request: Request) {
         const outputwithid = output.map((item) => {
             return {
                 ...item,
-                id : crypto.randomUUID()
+                id: crypto.randomUUID()
             }
         })
 
         await prisma.insights.upsert({
-            where : {
-                userId 
+            where: {
+                userId
             },
-            create : {
+            create: {
                 userId,
-                data : outputwithid
+                data: outputwithid
             },
-            update : {
-                data : output
+            update: {
+                data: outputwithid
             }
         })
 
