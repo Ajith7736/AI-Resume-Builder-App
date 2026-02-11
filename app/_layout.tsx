@@ -1,16 +1,19 @@
 import { useSession } from "@/context/AuthContext";
-import { SplashScreen, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { StatusBar } from 'expo-status-bar';
 import "./globals.css";
 import Providers from "./Providers";
+import { Platform } from "react-native";
 
-
-SplashScreen.preventAutoHideAsync();
 
 
 function InitialLayout() {
 
   const { session } = useSession();
+
+  if(Platform.OS == 'web'){
+    return null
+  }
 
   return (
     <Stack
