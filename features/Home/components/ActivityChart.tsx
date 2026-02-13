@@ -8,17 +8,17 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 const ActivityChart = ({ data }: { data: Map<number, number> | undefined }) => {
     const Today = new Date().getDay();
     const [Active, setActive] = useState<number | null>(null)
-    type Barchartprops = { value: number | undefined, label: string, frontColor: string }[]
+    type Barchartprops = { value: number | undefined, label: string, labelTextStyle: { color: string }, frontColor: string }[]
 
 
     const barData: Barchartprops = [
-        { value: data?.get(0), label: 'S', frontColor: Today === 0 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(1), label: 'M', frontColor: Today === 1 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(2), label: 'T', frontColor: Today === 2 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(3), label: 'W', frontColor: Today === 3 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(4), label: 'T', frontColor: Today === 4 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(5), label: 'F', frontColor: Today === 5 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
-        { value: data?.get(6), label: 'S', frontColor: Today === 6 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(0), label: 'S', labelTextStyle: { color: Today === 0 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 0 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(1), label: 'M', labelTextStyle: { color: Today === 1 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 1 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(2), label: 'T', labelTextStyle: { color: Today === 2 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 2 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(3), label: 'W', labelTextStyle: { color: Today === 3 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 3 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(4), label: 'T', labelTextStyle: { color: Today === 4 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 4 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(5), label: 'F', labelTextStyle: { color: Today === 5 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 5 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
+        { value: data?.get(6), label: 'S', labelTextStyle: { color: Today === 0 ? colors.tailwind.indigo[500] : colors.tailwind.slate[400] }, frontColor: Today === 6 ? colors.tailwind.indigo[500] : colors.tailwind.stone[200] },
     ];
 
     const ChartData = barData.map((item, indx) => {
@@ -54,7 +54,6 @@ const ActivityChart = ({ data }: { data: Map<number, number> | undefined }) => {
                 <BarChart
                     barWidth={20}
                     noOfSections={5}
-                    
                     initialSpacing={10}
                     endSpacing={0}
                     barBorderRadius={4}

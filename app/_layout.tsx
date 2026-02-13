@@ -11,7 +11,7 @@ function InitialLayout() {
 
   const { session } = useSession();
 
-  if(Platform.OS == 'web'){
+  if (Platform.OS == 'web') {
     return null
   }
 
@@ -57,6 +57,14 @@ function InitialLayout() {
           presentation: 'formSheet',
           animation: 'slide_from_bottom',
           sheetAllowedDetents: [0.62],
+          sheetCornerRadius: 35,
+          sheetElevation: 50,
+        }} />
+
+        <Stack.Screen name='paywall' options={{
+          presentation: 'formSheet',
+          animation: 'slide_from_bottom',
+          sheetAllowedDetents: [0.95],
           sheetCornerRadius: 35,
           sheetElevation: 50,
         }} />

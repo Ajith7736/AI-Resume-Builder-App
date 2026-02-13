@@ -226,6 +226,7 @@ export type Database = {
           fullname: string | null
           id: string
           image: string | null
+          Subscription: Database["public"]["Enums"]["Subscription"]
         }
         Insert: {
           createdAt?: string
@@ -233,6 +234,7 @@ export type Database = {
           fullname?: string | null
           id: string
           image?: string | null
+          Subscription?: Database["public"]["Enums"]["Subscription"]
         }
         Update: {
           createdAt?: string
@@ -240,6 +242,7 @@ export type Database = {
           fullname?: string | null
           id?: string
           image?: string | null
+          Subscription?: Database["public"]["Enums"]["Subscription"]
         }
         Relationships: []
       }
@@ -258,6 +261,7 @@ export type Database = {
         | "No_Response"
         | "Rejected"
         | "Offer"
+      Subscription: "Free" | "Pro"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -393,6 +397,7 @@ export const Constants = {
         "Rejected",
         "Offer",
       ],
+      Subscription: ["Free", "Pro"],
     },
   },
 } as const

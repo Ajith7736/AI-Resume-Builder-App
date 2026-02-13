@@ -18,6 +18,7 @@ import { FlatList } from 'react-native'
 import { insight } from '@/lib/Schema/OutputSchema'
 import { api } from '@/lib/Utils/FetchUtils'
 import { toast } from '@/lib/Toast/ToastUtility'
+import { router } from 'expo-router'
 
 const Insightpage = () => {
     const [isLoading, setisLoading] = useState(false)
@@ -30,15 +31,20 @@ const Insightpage = () => {
     const { data, isFetching } = useQuery({
         queryKey: ['insight'],
         queryFn: async () => {
-            const { data, error } = await supabase.from('Insights').select('data').eq('userId', session?.user.id as string).maybeSingle();
+            const { data: res, error } = await supabase.from('Insights').select('data').eq('userId', session?.user.id as string).maybeSingle();
 
             if (error) {
-                console.log(error.message)
+                console.error(error.message)
                 throw new Error('Server Error')
             }
 
-            return data?.data as insight[];
-        }
+            if (res) {
+                return res.data as insight[]
+            } else {
+                return null
+            }
+        },
+        enabled: !!session?.user
     })
 
 
@@ -89,8 +95,8 @@ const Insightpage = () => {
         bg: string,
         icon: ReactElement
     }> = {
-        info: { text: colors.tailwind.blue[700], bg: colors.tailwind.blue[50], icon: <Info  color={colors.tailwind.blue[700]} /> },
-        success: { text: colors.tailwind.green[700], bg: colors.tailwind.green[50], icon: <CheckCircle2  color={colors.tailwind.green[700]} /> },
+        info: { text: colors.tailwind.blue[700], bg: colors.tailwind.blue[50], icon: <Info color={colors.tailwind.blue[700]} /> },
+        success: { text: colors.tailwind.green[700], bg: colors.tailwind.green[50], icon: <CheckCircle2 color={colors.tailwind.green[700]} /> },
         warning: { text: colors.tailwind.amber[700], bg: colors.tailwind.amber[50], icon: <AlertTriangle color={colors.tailwind.amber[700]} /> },
         error: { text: colors.tailwind.red[700], bg: colors.tailwind.red[50], icon: <AlertCircle color={colors.tailwind.red[700]} /> },
     };
@@ -105,7 +111,9 @@ const Insightpage = () => {
                 <View className='flex gap-1'>
                     <TitleBackButton title='Analysis' />
                 </View>
-                <Pressable onPress={handlegetinsight} className='p-3 bg-white border border-slate-200 rounded-lg'>
+                <Pressable onPress={() => {
+                    router.push('/paywall')
+                }} className='p-3 bg-white border border-slate-200 rounded-lg'>
                     <Animatedloader style={animatedStyle} color={colors.tailwind.indigo[600]} size={20} />
                 </Pressable>
             </View>

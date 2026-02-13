@@ -10,9 +10,8 @@ import { Image } from 'expo-image';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text } from 'react-native';
 
-
 GoogleSignin.configure({
-    webClientId: '872173205794-e37a9rd58uq5e79rg454ad17s2ou9h6l.apps.googleusercontent.com',
+    webClientId: "872173205794-e37a9rd58uq5e79rg454ad17s2ou9h6l.apps.googleusercontent.com",
 });
 
 const GoogleSignInButton = () => {
@@ -46,7 +45,6 @@ const GoogleSignInButton = () => {
                 toast.error("SignIn cancelled")
             }
         } catch (err) {
-            console.error(err);
             if (isErrorWithCode(err)) {
                 switch (err.code) {
                     case statusCodes.IN_PROGRESS:
@@ -56,6 +54,7 @@ const GoogleSignInButton = () => {
                         toast.error('Play service not available')
                         break;
                     default:
+                        console.log(err.message)
                         toast.error('Google SignIn Error occured')
                 }
             } else {

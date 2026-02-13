@@ -4,7 +4,6 @@ import { toast } from "../Toast/ToastUtility";
 
 const BASE_URL = Platform.OS === 'web' ? '' :  process.env.EXPO_PUBLIC_BASE_URL;
 
-console.log(BASE_URL)
 
 export const api = {
     get: async (url: string) => {

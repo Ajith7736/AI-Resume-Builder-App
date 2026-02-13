@@ -114,7 +114,7 @@ const applications = () => {
                 if (hasNextPage && !isFetchingNextPage) fetchNextPage();
               }}
               onEndReachedThreshold={0.5}
-              ListFooterComponent={isFetchingNextPage ?
+              ListFooterComponent={isFetchingNextPage && hasNextPage && applications.length !< 10 ?
                 (<View style={{
                   marginTop: 15
                 }}>
@@ -127,7 +127,7 @@ const applications = () => {
             }} className=' flex items-center justify-center gap-2'>
               <View className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center  mx-auto border border-slate-200 shadow-sm">
                 <ClipboardList size={40} color={colors.tailwind.slate[300]} />
-              </View>
+              </View> 
               <Text className='text-[16px] text-center text-slate-800 font-bold tracking-widest'>No Applications</Text>
               <Text className="text-[12px] text-slate-500 text-center w-96 tracking-wider">
                 Your job search history will appear here. Tap the + to start logging.

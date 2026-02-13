@@ -4,14 +4,14 @@
     "slug": "resume-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Android_Icon.png",
     "scheme": "rezutrack",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "backgroundColor": "#ffffff",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rezutrack.builder"
+      "bundleIdentifier": "com.rezutrack.app"
     },
     "android": {
       "backgroundColor": "#ffffff",
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.rezutrack.builder",
+      "package": "com.rezutrack.app",
       "permissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -39,16 +39,16 @@
       [
         "expo-router",
         {
-          "origin" : "https://rezutrack.vercel.app/"
+          "origin": "https://rezutrack.vercel.app/"
         }
       ],
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/Resumeai-icon.png",
+          "image": "./assets/images/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#F8FAFC"
         }
       ],
       [
@@ -64,15 +64,12 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
       "eas": {
-        "projectId": "0dd0d438-5690-45a2-8fb4-aab93af1a574"
+        "projectId": "ad8e99d7-afbf-4f16-9467-be2794f102f5"
       }
     },
     "owner": "ajith77",
-    "updates": {
-      "url": "https://u.expo.dev/0dd0d438-5690-45a2-8fb4-aab93af1a574"
-    },
+    "updates": {},
     "runtimeVersion": {
       "policy": "appVersion"
     }
